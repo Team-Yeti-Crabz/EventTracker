@@ -1,2 +1,2 @@
-# Scratch_Project
-Our first Scratch Project
+# Event Tracker
+Our first Group Scratch Project
