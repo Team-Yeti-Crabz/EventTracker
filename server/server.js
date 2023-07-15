@@ -23,6 +23,11 @@ if (process.env.NODE_ENV === 'production') {
   app.use('/dist', express.static(path.join(__dirname, '../dist')));
 }
 
+// serve index.html on the route '/'
+app.get('/', (req, res) => {
+  res.status(200).sendFile(path.resolve(__dirname, '../client/index.html'));
+});
+
 //catch-all route
 app.use((req, res) => {
   res.sendStatus(404);
