@@ -19,3 +19,6 @@ dist/
 coverage/
 
 .vscode/
+
+# secrets
+server/models/secrets.js
