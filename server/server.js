@@ -15,7 +15,15 @@ app.use(cookieParser());
 
 //TODO: require routers
 
+const homeRouter = require('./routes/homeRouter');
+const preferenceRouter = require('./routes/preferenceRouter');
+const signinRouter = require('./routes/signinRouter');
+const signupRouter = require('./routes/signupRouter');
+
 //TODO: add router paths
+app.use('/api/home', homeRouter);
+app.use('/api/preferences', preferenceRouter);
+app.use('/api/signin', signinRouter);
 
 //serve bundle during production build
 if (process.env.NODE_ENV === 'production') {
