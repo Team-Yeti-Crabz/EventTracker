@@ -1,7 +1,11 @@
 import React from 'react';
+import '../styles.css';
 
-const HomePage = () => {
-  return <h1>Scratch project babyyyyy! woooo!</h1>;
-};
-
-export default HomePage;
+export default function HomePage() {
+//heavy CSS!
+  return (
+    <div className="homePage">
+      <div className="home"> Made it to homepage!</div>
+    </div>
+  );
+}
