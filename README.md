@@ -49,3 +49,9 @@ when you want to push up, these are the steps:
 7. Create a pull request in github from <your branch> ==> dev
 8. Repeat as needed
 9. When you are ready to publish to main, do step 7 but from dev => main
+
+## Connors Git Wisdom
+git fetch —all
+git fetch —all -v
+git branch -a
+git fetch —all —prune -v
