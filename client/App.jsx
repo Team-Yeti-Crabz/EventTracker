@@ -1,17 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 
-import styles from './styles.css';
-import HomePage from './pages/Home.jsx';
+// import styles from './styles.css';
+//import all pages
+import Home from './pages/Home.jsx';
+import Signin from './pages/Signin.jsx';
+import Signup from './pages/Signup.jsx';
+import Preferences from './pages/Preferences.jsx';
 
 //create app HTML structure
 const App = () => {
   return (
-    <div>
+    <div className="App">
       <Routes>
-        {/* TODO:Add each page as a route */}
-        <Route path="/" element={<HomePage />} />
-        {/* <Route path="/peakInfo" element={<PeakInfo />} /> */}
+        {/* Add each page as a route */}
+        <Route path="/" element={<Signin />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/home" element={<Home />} />
+        <Route path="/preferences" element={<Preferences />} />
       </Routes>
     </div>
   );
