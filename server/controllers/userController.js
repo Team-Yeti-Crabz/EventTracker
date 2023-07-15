@@ -5,6 +5,13 @@ const userController = {};
 //fetching user document from 'Users' collection in database
 userController.getUserInfo = async (req, res, next) => {
   const email = req.body.email;
+  if (!email)
+    return next({
+      log: `userController.postUserInfo ERROR: fourteener peak name missing`,
+      message: {
+        err: 'userController.postUserInfo: ERROR: fourteener peak name missing',
+      },
+    });
   try {
     const userInfo = await Users.find({ email });
     res.locals.userInfo = userInfo;

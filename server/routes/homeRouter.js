@@ -6,11 +6,11 @@ const router = express.Router();
 
 //add routers as needed
 /*
-received request from hope page with username in body
-pull user document from database
-request show info from seatgeek based on preferences
-sending back event data to client
-Expect request:
+-received request from hope page with username in body
+-pull user document from database
+-request show info from seatgeek based on preferences
+-sending back event data to client
+Expect request body:
     { 
     Email: String,
     Location: {
@@ -22,6 +22,6 @@ Expect request:
     }
     */
 
-router.get('/', userController.getUserInfo, (req, res) => {
+router.post('/', userController.getUserInfo, (req, res) => {
   return res.status(200).json(res.locals.userInfo);
 });
