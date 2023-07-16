@@ -25,8 +25,7 @@ const userSchema = new Schema({
     state: String,
   },
   artists: Array,
-  genres: Array,
-  hair_colors: String,
+  genres: Array
 });
 
 // creats a model for the 'species' collection that will be part of the export
