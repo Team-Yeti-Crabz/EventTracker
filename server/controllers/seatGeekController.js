@@ -49,9 +49,9 @@ seatGeekController.getArtistEvents = async (req, res, next) => {
     return next();
   } catch (err) {
     return next({
-      log: `seatGeekController.getEvents ERROR: trouble fetching seatgeek artist events`,
+      log: `seatGeekController.getArtistEvents ERROR: trouble fetching seatgeek events by artists`,
       message: {
-        err: `seatGeekController.getEvents: ERROR: ${err}`,
+        err: `seatGeekController.getArtistEvents: ERROR: ${err}`,
       },
     });
   }
@@ -60,7 +60,7 @@ seatGeekController.getArtistEvents = async (req, res, next) => {
 seatGeekController.getGenreEvents = async (req, res, next) => {
   try {
     const eventsArray = [];
-    const { genre } = req.query.genre;
+    const genre = req.query.genre;
     const city = res.locals.userInfo.location.city;
     // const genre = 'rock';
     // const city = 'Denver';
@@ -97,9 +97,9 @@ seatGeekController.getGenreEvents = async (req, res, next) => {
     return next();
   } catch (err) {
     return next({
-      log: `seatGeekController.getEvents ERROR: trouble fetching seatgeek artist events`,
+      log: `seatGeekController.getGenreEvents ERROR: trouble fetching seatgeek events by genre`,
       message: {
-        err: `seatGeekController.getEvents: ERROR: ${err}`,
+        err: `seatGeekController.getGenreEvents: ERROR: ${err}`,
       },
     });
   }
