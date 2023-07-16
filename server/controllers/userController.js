@@ -7,9 +7,9 @@ userController.getUserInfo = async (req, res, next) => {
   const email = req.body.email;
   if (!email)
     return next({
-      log: `userController.postUserInfo ERROR: fourteener peak name missing`,
+      log: `userController.getUserInfo ERROR: email missing from req body`,
       message: {
-        err: 'userController.postUserInfo: ERROR: fourteener peak name missing',
+        err: 'userController.getUserInfo: ERROR: email missing from req body',
       },
     });
   try {
@@ -18,13 +18,13 @@ userController.getUserInfo = async (req, res, next) => {
     /* 
     Expect userInfo to come back as:
     { 
-    Email: String,
-    Location: {
-        City: String,
-        State: String,
+    email: String,
+    location: {
+        city: String,
+        state: String,
         }
-    Artists: [Artist1, Artist2, Artist3]
-    Genres: [Genre1, Genre2, Genre3]
+    artists: [Artist1, Artist2, Artist3]
+    genres: [Genre1, Genre2, Genre3]
     }
     */
     return next();
@@ -39,19 +39,25 @@ userController.getUserInfo = async (req, res, next) => {
 };
 
 userController.createUser = async (req, res, next) => {
+  const { email, location } = req.body;
+  if (!email || !location)
+    return next({
+      log: `userController.createUser ERROR: missing email or location on req body`,
+      message: {
+        err: 'userController.createUser: ERROR: missing email or location on req body',
+      },
+    });
   try {
-    const { email, location } = req.body;
-    const newUser = await Users.create({email: email, location: location});
+    const newUser = await Users.create({ email, location });
     res.locals.newUser = newUser;
     return next();
-  }
-  catch (err) {
+  } catch (err) {
     return next({
       log: `userController.createUser ERROR: trouble creating new user`,
       message: {
-        err: `userController.createUser ERROR: ${err}`
-      }
-    })
+        err: `userController.createUser ERROR: ${err}`,
+      },
+    });
   }
 };
 
