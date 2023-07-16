@@ -61,4 +61,13 @@ userController.createUser = async (req, res, next) => {
   }
 };
 
+
+userController.updateUser = async (req, res, next) => {
+  
+  // to grab the email of patch request
+  //api/preference
+  // email = req.query.email
+}
+
+
 module.exports = userController;
