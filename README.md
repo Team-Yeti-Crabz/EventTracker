@@ -6,6 +6,10 @@ Our first Group Scratch Project
 
 Git Reference tips:
 
+## To grab all branches
+
+git fetch --all
+
 ## Step 1: clone down repo onto your personal computer
 
 git clone [project GitHub url]
