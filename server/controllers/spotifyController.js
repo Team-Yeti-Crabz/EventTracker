@@ -1,8 +1,9 @@
-const apiController = {};
+const spotifyController = {};
 
-apiController.getEvents = async (req, res, next) => {};
+//get request to SeatGeek based on user preferences
+spotifyController.getEvents = async (req, res, next) => {};
 
-module.exports = apiController;
+module.exports = spotifyController;
 
 //--> Function below is a get request to search for a specific artist using user input that is not seen<--
 //--> I was also terrible with catching errors, but functions to interact with spotify API must be async

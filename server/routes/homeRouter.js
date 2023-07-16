@@ -1,4 +1,5 @@
 const express = require('express');
+const seatGeekController = require('../controllers/seatGeekController.js');
 
 //add in any controllers
 
@@ -22,6 +23,10 @@ Expect request body:
     }
     */
 
-router.post('/', userController.getUserInfo, (req, res) => {
-  return res.status(200).json(res.locals.userInfo);
+// router.post('/', userController.getUserInfo, (req, res) => {
+//   return res.status(200).json(res.locals.userInfo);
+// });
+
+router.post('/', seatGeekController.getEvents, (req, res) => {
+  return res.status(200).json(res.locals.artistEvents);
 });
