@@ -24,7 +24,7 @@ const signupRouter = require('./routes/signupRouter');
 app.use('/api/home', homeRouter);
 // app.use('/api/preferences', preferenceRouter);
 // app.use('/api/signin', signinRouter);
-// app.use('/api/signup', signinRouter);
+app.use('/api/signup', signupRouter);
 
 //serve bundle during production build
 if (process.env.NODE_ENV === 'production') {

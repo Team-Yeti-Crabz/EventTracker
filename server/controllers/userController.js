@@ -1,10 +1,10 @@
-const { Users } = require('../models/userModels');
+const { Users } = require('../models/userModels.js');
 
 const userController = {};
 
 //fetching user document from 'Users' collection in database
 userController.getUserInfo = async (req, res, next) => {
-  const email = req.body.email;
+  const email = req.query.email;
   if (!email)
     return next({
       log: `userController.getUserInfo ERROR: email missing from req body`,
@@ -15,8 +15,7 @@ userController.getUserInfo = async (req, res, next) => {
   try {
     const userInfo = await Users.find({ email });
     res.locals.userInfo = userInfo;
-    /* 
-    Expect userInfo to come back as:
+    /* Expect userInfo to come back as:
     { 
     email: String,
     location: {
@@ -27,6 +26,7 @@ userController.getUserInfo = async (req, res, next) => {
     genres: [Genre1, Genre2, Genre3]
     }
     */
+
     return next();
   } catch {
     return next({
@@ -39,8 +39,8 @@ userController.getUserInfo = async (req, res, next) => {
 };
 
 userController.createUser = async (req, res, next) => {
-  const { email, location } = req.body;
-  if (!email || !location)
+  const { email, city, state } = req.body;
+  if (!email || !city || !state)
     return next({
       log: `userController.createUser ERROR: missing email or location on req body`,
       message: {
@@ -48,7 +48,7 @@ userController.createUser = async (req, res, next) => {
       },
     });
   try {
-    const newUser = await Users.create({ email, location });
+    const newUser = await Users.create({ email, location: { city, state } });
     res.locals.newUser = newUser;
     return next();
   } catch (err) {

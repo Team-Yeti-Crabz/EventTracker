@@ -24,18 +24,18 @@ Expect request body:
     }
     */
 
-// router.get(
-//   '/',
-//   userController.getUserInfo,
-//   seatGeekController.getEvents,
-//   (req, res) => {
-//     return res.status(200).json(res.locals.userInfo);
-//   }
-// );
+router.get(
+  '/',
+  userController.getUserInfo,
+  seatGeekController.getArtistEvents,
+  (req, res) => {
+    return res.status(200).json(res.locals.artistEvents);
+  }
+);
 
 //TODO: for testing, remove route later
-router.get('/', seatGeekController.getEvents, (req, res) => {
-  return res.status(200).json(res.locals.artistEvents);
-});
+// router.get('/', seatGeekController.getEvents, (req, res) => {
+//   return res.status(200).json(res.locals.artistEvents);
+// });
 
 module.exports = router;
