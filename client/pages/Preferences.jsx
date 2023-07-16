@@ -41,23 +41,57 @@ export default function Preference() {
       };
       fetchingData();
     }
-  }, [[location]]);
+  }, [location]);
 
-  const handleAdd = async (e) => {
+  //sending PATCH request with updated state
+  const handleLocation = async (e) => {
+    e.preventDefault();
+    try {
+      const toUpdate = {
+        email: email,
+        city: userData.city,
+        state: userData.state,
+      };
+      await fetch(`/api/preferences?email=${encodeURIComponent(email)}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(toUpdate),
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  //changing state
+  const handleChangeCity = (e) => {
+    const newCity = e.target.value;
+    setNewData((curr) => ({
+      ...curr,
+      city: newCity,
+    }));
+  };
+  //changing state
+  const handleChangeState = (e) => {
+    const newState = e.target.value;
+    setNewData((curr) => ({
+      ...curr,
+      state: newState,
+    }));
+  };
+
+  const handleAddArtist = async (e) => {
     e.preventDefault();
     try {
       const addInfo = {
         email: email,
-        artists: e.target.elements.artistName,
-        genres: e.target.elements.artistName,
+        artist: newArtist,
       };
-      await fetch('/api/preferences', {
-        method: 'POST',
+      await fetch(`/api/preferences?email=${encodeURIComponent(email)}`, {
+        method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(addInfo),
       });
-      setNewArtist(artists);
-      setNewGenre(genres);
+      setCurrArtists([...currArtists, newArtist]);
+      setNewArtist('');
     } catch (err) {
       console.log(err);
     }
@@ -65,18 +99,78 @@ export default function Preference() {
 
   console.log('userData: ', userData);
 
+  const handleChangeAddArtist = (e) => {
+    const newArtist = e.target.value;
+    setCurrArtists((curr) => [...curr, newArtist]);
+  };
+
+  const handleAddGenre = async (e) => {
+    e.preventDefault();
+    try {
+      const addInfo = {
+        email: email,
+        artist: newArtist,
+        genre: newGenre,
+      };
+      await fetch(`/api/preferences?email=${encodeURIComponent(userEmail)}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(addInfo),
+      });
+      setCurrArtists([...currArtists, newArtist]);
+      setCurrGenres([...currGenres, newGenre]);
+      setNewArtist('');
+      setNewGenre('');
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const handleChangeAddGenre = (e) => {
+    const newGenre = e.target.value;
+    setCurrGenres((curr) => [...curr, newGenre]);
+  };
+
   return (
     <div className="preferencesPage">
       <div className="preferences">
         <div className="basicInfo">
           <h1>Basic Info</h1>
-          <p>Username: {username}</p>
-          <p>City: {city}</p>
-          <p>State: {state}</p>
+          <p>Email: {email}</p>
+          <p>City: {userData.city}</p>
+          <p>State: {userData.state}</p>
           {/* add update function! */}
+          <div className="updateLocation">
+            <p>to update location:</p>
+            <form onSubmit={handleLocation} autoComplete="off">
+              <div className="addCity">
+                <p>new city:</p>
+                <input
+                  name="newCity"
+                  type="text"
+                  placeholder="new city"
+                  required
+                  onChange={handleChangeCity}
+                ></input>
+                <br></br>
+              </div>
+              <div className="addState">
+                <p>new state:</p>
+                <input
+                  name="newState"
+                  type="text"
+                  placeholder="new state"
+                  required
+                  onChange={handleChangeState}
+                ></input>
+                <br></br>
+              </div>
+              <input className="Btn" type="submit" value="update"></input>
+            </form>
+          </div>
         </div>
         <div className="add">
-          <form onSubmit={handleAdd} autoComplete="off">
+          <form onSubmit={handleAddArtist} autoComplete="off">
             <div className="addArtists">
               <h2>Add Artists:</h2>
               <input
@@ -88,6 +182,9 @@ export default function Preference() {
               ></input>
               <br></br>
             </div>
+            <input className="Btn" type="submit" value="add"></input>
+          </form>
+          <form onSubmit={handleAddGenre} autoComplete="off">
             <div className="addGenre">
               <h2>Add Genre:</h2>
               <input
@@ -95,7 +192,7 @@ export default function Preference() {
                 type="text"
                 placeholder="Genre Name"
                 required
-                onChange={handleChangeAddArtist}
+                onChange={handleChangeAddGenre}
               ></input>
               <br></br>
             </div>
