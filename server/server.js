@@ -3,6 +3,10 @@ const express = require('express');
 const path = require('path');
 const fs = require('fs');
 const cookieParser = require('cookie-parser');
+const request = require('request'); // "Request" library
+const cors = require('cors');
+const querystring = require('querystring');
+
 
 //set express functionallity to 'app' and establish PORT
 const app = express();
@@ -12,6 +16,8 @@ const PORT = 3000;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
+app.use(cors());
+
 
 //TODO: require routers
 
@@ -19,12 +25,14 @@ const homeRouter = require('./routes/homeRouter');
 const preferenceRouter = require('./routes/preferenceRouter');
 const signinRouter = require('./routes/signinRouter');
 const signupRouter = require('./routes/signupRouter');
+const authRouter = require('./routes/authRouter')
 
 //TODO: add router paths
 app.use('/api/home', homeRouter);
 app.use('/api/preferences', preferenceRouter);
 app.use('/api/signin', signinRouter);
 app.use('/api/signup', signinRouter);
+app.use('/api/authentication', authRouter);
 
 //serve bundle during production build
 if (process.env.NODE_ENV === 'production') {
