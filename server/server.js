@@ -29,9 +29,9 @@ const authRouter = require('./routes/authRouter')
 
 //TODO: add router paths
 app.use('/api/home', homeRouter);
-app.use('/api/preferences', preferenceRouter);
-app.use('/api/signin', signinRouter);
-app.use('/api/signup', signinRouter);
+// app.use('/api/preferences', preferenceRouter);
+// app.use('/api/signin', signinRouter);
+app.use('/api/signup', signupRouter);
 app.use('/api/authentication', authRouter);
 
 //serve bundle during production build

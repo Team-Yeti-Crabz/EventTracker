@@ -1,27 +1,34 @@
-import React from 'react';
+import React, { useState } from 'react';
 import '../styles.css';
+import { Link } from 'react-router-dom';
 
 export default function Signup() {
+  const [email, setUserEmail] = useState('');
+  const [city, setUserCity] = useState('');
+  const [state, setUserState] = useState('');
+
   // send the location and email to the database!!
   //get access token!
   // on submit, the inputs are sent in a req body to the server at /api/signup
   const handleNewUser = async (e) => {
-    e.preventDefaul();
+    e.preventDefault();
     try {
       const signupReq = {
         email: e.target.elements.email.value,
         city: e.target.elements.city.value,
-        state: e.target.elements.city.state,
+        state: e.target.elements.state.value,
         //add tokens
       };
+      const userEmail = e.target.elements.email.value;
+      setUserEmail(userEmail);
+      const userCity = e.target.elements.city.value;
+      setUserCity(userCity);
+      const userState = e.target.elements.state.value;
+      setUserState(userState);
       await fetch('/api/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(signupReq),
-      });
-      await fetch('/preferences', {
-        method: 'GET',
-        headers: { 'Content-Type': 'application/json' },
       });
     } catch (err) {
       console.log('handleNewUser error:', err);
@@ -47,10 +54,17 @@ export default function Signup() {
             required
           ></input>
           <br></br>
-          <input name="state" type="password" placeholder="NY" required></input>
+          <input name="state" type="text" placeholder="NY" required></input>
           <br></br>
           <br></br>
-          <input className="Btn" type="submit" value="Add"></input>
+          <Link
+            to={{
+              pathname: '/preferences',
+              state: { email: email, city: city, state: state },
+            }}
+          >
+            <input className="Btn" type="submit" value="Add"></input>
+          </Link>
         </form>
       </div>
     </div>
