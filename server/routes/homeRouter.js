@@ -27,6 +27,8 @@ Expect request body:
 //   return res.status(200).json(res.locals.userInfo);
 // });
 
-router.post('/', seatGeekController.getEvents, (req, res) => {
+router.get('/', seatGeekController.getEvents, (req, res) => {
   return res.status(200).json(res.locals.artistEvents);
 });
+
+module.exports = router;

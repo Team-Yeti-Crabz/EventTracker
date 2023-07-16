@@ -8,7 +8,7 @@ const seatGeekController = {};
 //get request to SeatGeek based on user preferences
 seatGeekController.getEvents = (req, res, next) => {
   const data = async () => {
-    await fetch(
+    const response = await fetch(
       `https://api.seatgeek.com/2/events/?performers.slug=drake&client_id=${seatgeek.client_id}&client_secret=${seatgeek.client_secret}`
     );
     const artistData = await response.json();
