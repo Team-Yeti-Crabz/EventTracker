@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
+const { mongoDB } = require('./secrets.js');
 
-//Used MongoDB
-const MONGO_URI =
-  'mongodb+srv://tthcodes:codesmith@eventtracker.y68qhgj.mongodb.net/?retryWrites=true&w=majority';
+// Used MongoDB
+const MONGO_URI = `mongodb+srv://${mongoDB.username}:${mongoDB.password}@eventtracker.y68qhgj.mongodb.net/?retryWrites=true&w=majority`;
 
 mongoose
   .connect(MONGO_URI, {
