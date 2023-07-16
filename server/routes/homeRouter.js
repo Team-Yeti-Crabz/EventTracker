@@ -7,12 +7,12 @@ const userController = require('../controllers/userController.js');
 const router = express.Router();
 
 //add routers as needed
-/*
+/* Route steps:
 -received request from hope page with username in body
 -pull user document from database (attached to res.locals.userInfo)
 -request show info from seatgeek based on preferences
 -sending back event data to client
-Expect request body:
+Expect response body:
     { 
     Email: String,
     Location: {
@@ -25,11 +25,20 @@ Expect request body:
     */
 
 router.get(
-  '/',
+  '/artist',
   userController.getUserInfo,
   seatGeekController.getArtistEvents,
   (req, res) => {
     return res.status(200).json(res.locals.artistEvents);
+  }
+);
+
+router.get(
+  '/genre',
+  userController.getUserInfo,
+  seatGeekController.getGenreEvents,
+  (req, res) => {
+    return res.status(200).json(res.locals.genreEvents);
   }
 );
 
