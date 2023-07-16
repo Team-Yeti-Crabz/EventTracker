@@ -38,4 +38,21 @@ userController.getUserInfo = async (req, res, next) => {
   }
 };
 
+userController.createUser = async (req, res, next) => {
+  try {
+    const { email, location } = req.body;
+    const newUser = await Users.create({email: email, location: location});
+    res.locals.newUser = newUser;
+    return next();
+  }
+  catch (err) {
+    return next({
+      log: `userController.createUser ERROR: trouble creating new user`,
+      message: {
+        err: `userController.createUser ERROR: ${err}`
+      }
+    })
+  }
+};
+
 module.exports = userController;
