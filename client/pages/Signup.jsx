@@ -35,7 +35,7 @@ export default function Signup() {
         <h4>add your email:</h4>
         {/* send a post request to the database with the location */}
         {/* make sure to pass in email from OAuth as well! */}
-        <Link to={{ pathname: '/preferences', state: { email: true } }}>
+        <Link to={{ pathname: '/preferences', state: { email } }}>
           <form onSubmit={handleNewUser} autoComplete="off">
             <input
               name="email"
