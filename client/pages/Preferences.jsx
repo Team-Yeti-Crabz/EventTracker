@@ -13,19 +13,33 @@ export default function Preference() {
   const state = 'HI';
 
   //fetch user data object
-  const fetchingData = async() => {
+  const fetchingData = async () => {
     try {
-        const response = await fetch('/api/', {
-            method: 'GET',
-            headers: {'Content-Type': 'application/json'}
-        });
-        const data = await response.json();
-        // response:
-
-    } catch{
-        throw new Error('Error with initial fetch request!')
+        //query?
+      const response = await fetch('/api/preferences?email=', {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' },
+      });
+      const data = await response.json();
+      // response:
+      // {
+      // city:
+      // state:
+      // artists:[1,2,3]
+      // genres: [a,b,c]
+      // }
+      setUserData(data);
+    } catch {
+      throw new Error('Error with initial fetch request!');
     }
-  
+  };
+
+  useEffect(() => {
+    fetchingData();
+  }, []);
+
+  console.log('userData: ', userData);
+
   return (
     <div className="preferencesPage">
       <div className="preferences">
