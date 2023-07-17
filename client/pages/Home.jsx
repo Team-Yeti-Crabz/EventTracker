@@ -10,6 +10,9 @@ export default function HomePage() {
   const [artists, setArtists] = useState([]);
   const [genres, setGenres] = useState([]);
 
+  console.log('email: ', email);
+  console.log(typeof email);
+
   useEffect(() => {
     const fetchingArtists = async () => {
       try {
@@ -81,7 +84,7 @@ export default function HomePage() {
           <Link
             underline="hover"
             color="inherit"
-            to={{ pathname: '/preferences', state: { email: email } }}
+            to='/preferences' state={{ email: email}}
           >
             PREFERENCES
           </Link>
