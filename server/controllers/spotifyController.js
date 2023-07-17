@@ -3,16 +3,22 @@ const spotifyController = {};
 //get request to SeatGeek based on user preferences
 spotifyController.getEvents = async (req, res, next) => {};
 
+const searchParams = {
+  method: 'GET',
+  headers: {
+    'Content-Type': 'application/json',
+    Authorization: 'Bearer ' + accessToken,
+  },
+};
+const response = await fetch(
+  'https://api.spotify.com/v1/me/top/artists?time_range=medium_term&limit=10&offset=0',
+  searchParams
+);
 module.exports = spotifyController;
 
 //--> Function below is a get request to search for a specific artist using user input that is not seen<--
 //--> I was also terrible with catching errors, but functions to interact with spotify API must be async
 // async function search() {
-
-//--> this part is refreshing the page if user input is blank
-//   if(searchInput.trim() === ""){
-//     window.location.reload();
-//   };
 
 //--> searchParams is just building out "init" obj (2nd param in fetch req) that lets you control things about the fetch request.
 //--> Check spotify docs to see the specific requirements they need in this 'init' obj depending on what you are requesting
