@@ -22,10 +22,10 @@ app.use(cors());
 //TODO: require routers
 
 const homeRouter = require('./routes/homeRouter');
-const preferenceRouter = require('./routes/preferenceRouter');
+// const preferenceRouter = require('./routes/preferenceRouter');
 const signinRouter = require('./routes/signinRouter');
 const signupRouter = require('./routes/signupRouter');
-const authRouter = require('./routes/authRouter')
+const authRouter = require('./routes/authRouter');
 
 //TODO: add router paths
 app.use('/api/home', homeRouter);

@@ -31,7 +31,7 @@ const stateKey = 'spotify_auth_state';
 const authController = {};
 
 // initialize state to request user authentication from Spotify 
-authController.initializeAuth = async (req, res, next) => 
+authController.initializeAuth = (req, res, next) => 
 {
   try {
       const state = generateRandomString(16);
@@ -47,7 +47,7 @@ authController.initializeAuth = async (req, res, next) =>
         redirect_uri: redirect_uri,
         state: state
       })  
-
+      console.log('initialize auth complete');
       return next();
   } catch (err) {
     return next({
