@@ -12,30 +12,29 @@ export default function HomePage() {
   const [genres, setGenres] = useState([]);
 
   useEffect(() => {
-    const fetchingUserData = async () => {
-      try {
-        const response = await fetch(
-          `/api/preferences?email=${encodeURIComponent(email)}`,
-          {
-            method: 'GET',
-            headers: { 'Content-Type': 'application/json' },
-          }
-        );
-        const data = await response.json();
-        console.log(data);
-        // {
-        // email:
-        // location: {city:, state:}
-        // artists:[1,2,3]
-        // genres: [a,b,c]
-        // }
-        setUserData(data);
-      } catch (err) {
-        throw new Error('Error with initial fetch request!', err);
-      }
-    };
+    // const fetchingUserData = async () => {
+    //   try {
+    //     const response = await fetch(
+    //       `/api/home?email=${encodeURIComponent(email)}`,
+    //       {
+    //         method: 'GET',
+    //         headers: { 'Content-Type': 'application/json' },
+    //       }
+    //     );
+    //     const data = await response.json();
+    //     console.log(data);
+    //     // {
+    //     // email:
+    //     // location: {city:, state:}
+    //     // artists:[1,2,3]
+    //     // genres: [a,b,c]
+    //     // }
+    //     setUserData(data);
+    //   } catch (err) {
+    //     throw new Error('Error with initial fetch request!', err);
+    //   }
+    // };
     //fetchingUserData();
-
     const fetchingArtists = async () => {
       try {
         const response = await fetch(
@@ -106,7 +105,7 @@ export default function HomePage() {
           <Link
             underline="hover"
             color="inherit"
-            to={{ pathname: '/home', state: { email: email } }}
+            to={{ pathname: '/preferences', state: { email: email } }}
           >
             PREFERENCES
           </Link>
