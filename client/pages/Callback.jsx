@@ -8,6 +8,7 @@ export default function Callback() {
   //heavy CSS!
 
   const [email, setEmail] = useState('');
+  const [fetched, setFetched] = useState(false);
 
   const navigate = useNavigate();
   // const routeChange = (path) =>{
@@ -97,7 +98,12 @@ export default function Callback() {
     }
   };
 
-  getTokens();
+  if (fetched === false) {
+    setFetched(true);
+  }
+  useEffect(() => {
+    getTokens();
+  }, [fetched]);
 
   return (
     <div className="signinPage">

@@ -5,6 +5,7 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 export default function Signup() {
   const location = useLocation();
   const { email, accessToken, username } = location.state;
+  console.log('email', email, 'accessToken', accessToken, 'username', username);
   const [city, setUserCity] = useState('');
   const [state, setUserState] = useState('');
   const navigate = useNavigate();
