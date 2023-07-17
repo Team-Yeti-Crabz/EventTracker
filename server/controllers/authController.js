@@ -9,7 +9,10 @@ const {spotify} = require('../models/secrets')
 const client_id = spotify.clientId; // Your client id
 const client_secret = spotify.clientSecret; // Your secret
 // ! SET TO 8080 TO RUN IN DEV MODE. CHANGE TO 3000 IF IN PRODUCTION
-const redirect_uri = 'http://localhost:8080/api/authentication/callback'; // Your redirect uri
+const redirect_uri = 'http://localhost:8080/callback'; // Your redirect uri
+
+// const storedState = req.cookies ? req.cookies[stateKey] : null;
+const stateKey = 'spotify_auth_state';
 
 /**
  * Generates a random string containing numbers and letters
@@ -26,7 +29,6 @@ const generateRandomString = function(length) {
   return text;
 };
 
-const stateKey = 'spotify_auth_state';
 
 
 const authController = {};
@@ -48,7 +50,7 @@ authController.initializeAuth = (req, res, next) =>
         redirect_uri: redirect_uri,
         state: state
       })  
-      console.log('initialize auth complete');
+      console.log('initialize auth url complete');
       return next();
   } catch (err) {
     return next({
@@ -62,6 +64,8 @@ authController.initializeAuth = (req, res, next) =>
 // check spotify's response for state parameter
 authController.checkState = (req, res, next) => {
     // the state parameter will tell us if the user was authenticated by spotify, if they did not choose to redirect to spotify, or if there was an error
+  const storedState = req.cookies ? req.cookies[stateKey] : null
+
   try {
 
     const state = req.query.state || null;
@@ -100,7 +104,7 @@ authController.checkState = (req, res, next) => {
 // request access tokens from spotify
 authController.getTokens = (req, res, next) => {
     const code = req.query.code || null;
-    const storedState = req.cookies ? req.cookies[stateKey] : null;
+    
 
     // clear statekey that was stored on cookie as it's no longer needed. Will be using access and refresh token to communicate with spotify api
     res.clearCookie(stateKey);
