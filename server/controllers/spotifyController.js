@@ -1,17 +1,50 @@
-const apiController = {};
+const spotifyController = {};
 
-apiController.getEvents = async (req, res, next) => {};
+//get request to SeatGeek based on user preferences
+spotifyController.getTopArtists = async (req, res, next) => {
+  const accessToken = res.locals.accessToken;
 
-module.exports = apiController;
+  const searchParams = {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer ' + accessToken,
+    },
+  };
+  const response = await fetch(
+    'https://api.spotify.com/v1/me/top/artists?time_range=medium_term&limit=10&offset=0',
+    searchParams
+  );
+  const data = await response.json().items;
+  const artistArray = [];
+  data.forEach((el) => {
+    artistArray.push(el.name);
+  });
+  res.locals.spotifyArtists = artistArray;
+};
+
+spotifyController.getAccountInfo = async (req, res, next) => {
+  const accessToken = res.locals.accessToken;
+
+  const searchParams = {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer ' + accessToken,
+    },
+  };
+  const response = await fetch('https://api.spotify.com/v1/me', searchParams);
+  const data = await response.json().items;
+  const { userEmail, display_name } = data;
+  res.locals.userEmail = userEmail;
+  res.locals.username = display_name;
+};
+
+module.exports = spotifyController;
 
 //--> Function below is a get request to search for a specific artist using user input that is not seen<--
 //--> I was also terrible with catching errors, but functions to interact with spotify API must be async
 // async function search() {
-
-//--> this part is refreshing the page if user input is blank
-//   if(searchInput.trim() === ""){
-//     window.location.reload();
-//   };
 
 //--> searchParams is just building out "init" obj (2nd param in fetch req) that lets you control things about the fetch request.
 //--> Check spotify docs to see the specific requirements they need in this 'init' obj depending on what you are requesting
