@@ -63,19 +63,26 @@ userController.createUser = async (req, res, next) => {
 
 userController.updateUser = async (req, res, next) => {
   const email = req.query.email;
-  const { artists, genres } = req.body;
+  const { artists, genres, location} = req.body;
   console.log(artists);
   console.log(genres);
-  // console.log(req.body);
-  if (!artists && !genres)
+ 
+  if (!artists && !genres && !location)
     return next({
-      log: `userController.updateUser ERROR: missing artist or genre on req body`,
+      log: `userController.updateUser ERROR: missing artist/genre/location on req body`,
       message: {
-        err: 'userController.updateUser: ERROR: missing artist or genre on req body',
+        err: 'userController.updateUser: ERROR: missing artist/genre/location on req body',
       },
     });
 
   try {
+    if (location) {
+      const updatedUser = await Users.findOneAndUpdate(
+        { email: email },
+        { $set: { location: location} },
+        { new: true }
+      )
+    }
     if (artists) {
       const updatedUser = await Users.findOneAndUpdate(
         { email: email },
@@ -136,5 +143,7 @@ userController.updateUserSpotify = async (req, res, next) => {
 
 
 //add middleware to send access token to database
+userController.addToken = async (req, res, next) => {
 
+}
 module.exports = userController;
