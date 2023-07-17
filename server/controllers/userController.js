@@ -61,10 +61,9 @@ userController.createUser = async (req, res, next) => {
   }
 };
 
-
 userController.updateUser = async (req, res, next) => {
   const email = req.query.email;
-  const {artists, genres} = req.body;
+  const { artists, genres } = req.body;
   console.log(artists);
   console.log(genres);
   // console.log(req.body);
@@ -74,31 +73,65 @@ userController.updateUser = async (req, res, next) => {
       message: {
         err: 'userController.updateUser: ERROR: missing artist or genre on req body',
       },
-  });
+    });
 
   try {
-    if(artists){
-      const updatedUser = await Users.findOneAndUpdate({email: email}, {artists: artists}, {new: true});
+    if (artists) {
+      const updatedUser = await Users.findOneAndUpdate(
+        { email: email },
+        { artists: artists },
+        { new: true }
+      );
       res.locals.updatedUser = updatedUser;
-    };
-    if(genres){
-      const updatedUser = await Users.findOneAndUpdate({email: email}, {genres: genres}, {new: true});
+    }
+    if (genres) {
+      const updatedUser = await Users.findOneAndUpdate(
+        { email: email },
+        { genres: genres },
+        { new: true }
+      );
       res.locals.updatedUser = updatedUser;
-    };
+    }
     console.log(updatedUser);
 
     return next();
-  }
-  
-  catch(err){
+  } catch (err) {
     return next({
       log: `userController.createUser ERROR: trouble creating new user`,
       message: {
         err: `userController.createUser ERROR: ${err}`,
       },
-    })
+    });
   }
-}
+};
+//initially updates users prefered artists
+userController.updateUserSpotify = async (req, res, next) => {
+  const email = res.locals.email;
+  const artists = res.locals.spotifyArtists;
+  if (!artists || !email)
+    return next({
+      log: `userController.updateUserSpotify ERROR: missing artist or email`,
+      message: {
+        err: 'userController.updateUserSpotify: ERROR: missing artist or email',
+      },
+    });
 
+  try {
+    const updatedUser = await Users.findOneAndUpdate(
+      { email },
+      { artists },
+      { new: true }
+    );
+    res.locals.updatedUser = updatedUser;
+    return next();
+  } catch (err) {
+    return next({
+      log: `userController.createUser ERROR: trouble creating new user`,
+      message: {
+        err: `userController.createUser ERROR: ${err}`,
+      },
+    });
+  }
+};
 
 module.exports = userController;
