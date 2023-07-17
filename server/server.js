@@ -21,14 +21,14 @@ app.use(cors());
 
 //requiring in routers
 const homeRouter = require('./routes/homeRouter');
-// const preferenceRouter = require('./routes/preferenceRouter');
+const preferenceRouter = require('./routes/preferenceRouter');
 const signinRouter = require('./routes/signinRouter');
 const signupRouter = require('./routes/signupRouter');
 const authRouter = require('./routes/authRouter');
 
 //establishing router paths
 app.use('/api/home', homeRouter);
-// app.use('/api/preferences', preferenceRouter);
+app.use('/api/preferences', preferenceRouter);
 // app.use('/api/signin', signinRouter);
 app.use('/api/signup', signupRouter);
 app.use('/api/authentication', authRouter);

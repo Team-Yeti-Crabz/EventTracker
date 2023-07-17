@@ -1,11 +1,24 @@
 const express = require('express');
 const userController = require('../controllers/userController');
+
 const router = express.Router();
-//use get userinfo to grab document, 
-// router.get('/', userController.getUserInfo) => //send back
 
-router.post('/', userController.getUserInfo, (req, res) => {
-  req.body
-  res.locals.userInfo
-})
+//Get user info from database to population preferences page
+router.get('/', userController.getUserInfo, (req, res) => {
+  const {email, location, artists, genres} = res.locals.userInfo
+  const newObj = {
+    email: email,
+    city: location.city,
+    state: location.state,
+    artists: artists,
+    genres: genres,
+  };
+  return res.status(200).json(newObj);
+});
 
+//Update artists or genres for each user in the database
+router.patch('/', userController.updateUser, (req, res) => {
+  return res.sendStatus(200);
+});
+
+module.exports = router;

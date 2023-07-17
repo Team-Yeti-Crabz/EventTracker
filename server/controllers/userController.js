@@ -13,7 +13,7 @@ userController.getUserInfo = async (req, res, next) => {
       },
     });
   try {
-    const userInfo = await Users.find({ email });
+    const userInfo = await Users.findOne({ email });
     res.locals.userInfo = userInfo;
     /* Expect userInfo to come back as:
     { 
@@ -63,10 +63,41 @@ userController.createUser = async (req, res, next) => {
 
 
 userController.updateUser = async (req, res, next) => {
+  const email = req.query.email;
+  const {artists, genres} = req.body;
+  console.log(artists);
+  console.log(genres);
+  // console.log(req.body);
+  if (!artists && !genres)
+    return next({
+      log: `userController.updateUser ERROR: missing artist or genre on req body`,
+      message: {
+        err: 'userController.updateUser: ERROR: missing artist or genre on req body',
+      },
+  });
+
+  try {
+    if(artists){
+      const updatedUser = await Users.findOneAndUpdate({email: email}, {artists: artists}, {new: true});
+      res.locals.updatedUser = updatedUser;
+    };
+    if(genres){
+      const updatedUser = await Users.findOneAndUpdate({email: email}, {genres: genres}, {new: true});
+      res.locals.updatedUser = updatedUser;
+    };
+    console.log(updatedUser);
+
+    return next();
+  }
   
-  // to grab the email of patch request
-  //api/preference
-  // email = req.query.email
+  catch(err){
+    return next({
+      log: `userController.createUser ERROR: trouble creating new user`,
+      message: {
+        err: `userController.createUser ERROR: ${err}`,
+      },
+    })
+  }
 }
 
 
