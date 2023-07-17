@@ -24,8 +24,9 @@ seatGeekController.getArtistEvents = async (req, res, next) => {
       /*fetch to seatgeek API 
       query based on City, Artist, and date range of 3 Months
       */
+      const artistString = artists[i].toLowerCase().replaceAll(' ', '-');
       const response = await fetch(
-        `https://api.seatgeek.com/2/events/?client_id=${seatgeek.client_id}&client_secret=${seatgeek.client_secret}&performers.slug=${artists[i]}&venue.city=${city}&datetime_utc.gte=${today}&datetime_utc.lte=${threeMonths}`
+        `https://api.seatgeek.com/2/events/?client_id=${seatgeek.client_id}&client_secret=${seatgeek.client_secret}&performers.slug=${artistString}&venue.city=${city}&datetime_utc.gte=${today}&datetime_utc.lte=${threeMonths}`
       );
       const { events } = await response.json();
       console.log(events);
