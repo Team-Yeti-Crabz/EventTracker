@@ -60,6 +60,17 @@ git fetch —all -v
 git branch -a
 git fetch —all —prune -v
 
+# git 
+    Git add/commit
+    git push origin halia-frontEnd
+
+    Go make pull request from halia-frontEnd to dev
+
+    git checkout dev
+    git pull origin dev
+    git checkout halia-frontEnd
+    git merge dev
+
 # OAuth
 - Request User Authorization
 
