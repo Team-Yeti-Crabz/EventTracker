@@ -23,6 +23,23 @@ spotifyController.getTopArtists = async (req, res, next) => {
   res.locals.spotifyArtists = artistArray;
 };
 
+spotifyController.getAccountInfo = async (req, res, next) => {
+  const accessToken = res.locals.accessToken;
+
+  const searchParams = {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer ' + accessToken,
+    },
+  };
+  const response = await fetch('https://api.spotify.com/v1/me', searchParams);
+  const data = await response.json().items;
+  const { userEmail, display_name } = data;
+  res.locals.userEmail = userEmail;
+  res.locals.username = display_name;
+};
+
 module.exports = spotifyController;
 
 //--> Function below is a get request to search for a specific artist using user input that is not seen<--
