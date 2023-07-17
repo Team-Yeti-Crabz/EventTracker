@@ -79,7 +79,7 @@ userController.updateUser = async (req, res, next) => {
     if (artists) {
       const updatedUser = await Users.findOneAndUpdate(
         { email: email },
-        { artists: artists },
+        { $push: { artists: artists} },
         { new: true }
       );
       res.locals.updatedUser = updatedUser;
@@ -92,14 +92,14 @@ userController.updateUser = async (req, res, next) => {
       );
       res.locals.updatedUser = updatedUser;
     }
-    console.log(updatedUser);
+    console.log(res.locals.updatedUser);
 
     return next();
   } catch (err) {
     return next({
-      log: `userController.createUser ERROR: trouble creating new user`,
+      log: `userController.updateUser ERROR: trouble updating user`,
       message: {
-        err: `userController.createUser ERROR: ${err}`,
+        err: `userController.updateUser ERROR: ${err}`,
       },
     });
   }
@@ -133,5 +133,8 @@ userController.updateUserSpotify = async (req, res, next) => {
     });
   }
 };
+
+
+//add middleware to send access token to database
 
 module.exports = userController;
