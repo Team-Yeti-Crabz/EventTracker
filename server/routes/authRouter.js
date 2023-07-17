@@ -14,7 +14,6 @@ router.get('/', authController.initializeAuth, (req, res) => {
 // user is redirected here from spotify after entering their credentials
 // if the user's credentials were authenticated, make get request to obtain refresh and access tokens from spotify
 // TODO: if succesful, send the logged res.locals info to server to store for duration of user session
-// authController.checkState, authController.getTokens, 
 router.get('/callback', authController.checkState, authController.getTokens, (req, res) => {
     console.log('acces token: ', res.locals.accessToken);
     console.log('refresh token: ', res.locals.refreshToken);
@@ -22,5 +21,18 @@ router.get('/callback', authController.checkState, authController.getTokens, (re
     return res.sendStatus(200);
 
 });
+
+// TODO: get user email from spotify and check if the user exists in the database
+
+router.get('/email', (req, res) => {
+    /*
+    TODO: frontEnd expects response: 
+    {
+        email: stringify,
+        exists: true/false
+    }
+    */
+    return;
+})
 
 module.exports = router;
