@@ -4,9 +4,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Card, CardContent, Typography, Breadcrumbs } from '@mui/material';
 
 export default function Preference() {
-  //Manage states: location, artists, genres
   const location = useLocation();
-  //allows you to navigate/manipulate the browser history
   // const { email } = location.state;
   const email = 'haliahaynes';
   const [userData, setUserData] = useState({});
@@ -230,21 +228,21 @@ export default function Preference() {
             <div className="currentArtists">
               <h2>Current Artists Tracked:</h2>
               <div className="artistList">
-              <ul>
-                {currArtists.map((artist, i) => (
-                  <li key={artist + i}>{artist}</li>
-                ))}
-              </ul>
+                <ul>
+                  {currArtists.map((artist, i) => (
+                    <li key={artist + i}>{artist}</li>
+                  ))}
+                </ul>
               </div>
             </div>
             <div className="currentGenres">
               <h2>Current Genres Tracked:</h2>
               <div className="genreList">
-              <ul>
-                {currGenres.map((genre, i) => (
-                  <li key={genre + i}>{genre}</li>
-                ))}
-              </ul>
+                <ul>
+                  {currGenres.map((genre, i) => (
+                    <li key={genre + i}>{genre}</li>
+                  ))}
+                </ul>
               </div>
             </div>
           </div>
