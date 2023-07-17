@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import '../styles.css';
 import { Link, useLocation } from 'react-router-dom';
-import { Card, CardContent, Typography } from '@mui/material';
+import { Card, CardContent, Typography, Breadcrumbs } from '@mui/material';
 
 export default function HomePage() {
   const location = useLocation();
@@ -34,7 +34,7 @@ export default function HomePage() {
         throw new Error('Error with initial fetch request!', err);
       }
     };
-    fetchingUserData();
+    //fetchingUserData();
 
     const fetchingArtists = async () => {
       try {
@@ -63,7 +63,7 @@ export default function HomePage() {
         throw new Error('Error with artist fetch request!', err);
       }
     };
-    fetchingArtists();
+    //fetchingArtists();
 
     const fetchingGenres = async () => {
       try {
@@ -93,17 +93,27 @@ export default function HomePage() {
         throw new Error('Error with genre fetch request!', err);
       }
     };
-    fetchingGenres();
+    //fetchingGenres();
   });
 
   return (
     <div className="homePage">
+      <div className="breadcrumb">
+        <Breadcrumbs aria-label="breadcrumb">
+          <p color="text.primary" className="breadcrumbs">
+            HOME PAGE
+          </p>
+          <Link
+            underline="hover"
+            color="inherit"
+            to={{ pathname: '/home', state: { email: email } }}
+          >
+            PREFERENCES
+          </Link>
+        </Breadcrumbs>
+      </div>
       <div className="home"> Welcome, {email}!</div>
-      <button className="Btn">
-        <Link to={{ pathname: '/preferences', state: { email: email } }}>
-          Preferences
-        </Link>
-      </button>
+
       <div className="showBox">
         <h1>Upcoming Shows In Your Area</h1>
         <div className="artistShows">

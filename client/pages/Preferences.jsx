@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import '../styles.css';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Card, CardContent, Typography, Breadcrumbs } from '@mui/material';
 
 export default function Preference() {
   //Manage states: location, artists, genres
@@ -138,94 +139,115 @@ export default function Preference() {
 
   return (
     <div className="preferencesPage">
-      <button className="Btn">
-        <Link to={{ pathname: '/home', state: { email: email } }}>
-          Home Page
-        </Link>
-      </button>
+      <div className="breadcrumb">
+        <Breadcrumbs aria-label="breadcrumb">
+          <p color="text.primary" className="breadcrumbs">
+            PREFERENCES
+          </p>
+          <Link
+            underline="hover"
+            color="inherit"
+            to={{ pathname: '/home', state: { email: email } }}
+          >
+            HOME PAGE
+          </Link>
+        </Breadcrumbs>
+      </div>
       <div className="preferences">
-        <div className="basicInfo">
-          <h1>Basic Info</h1>
-          <p>Email: {email}</p>
-          <p>City: {userData.city}</p>
-          <p>State: {userData.state}</p>
-          {/* add update function! */}
-          <div className="updateLocation">
-            <p>to update location:</p>
-            <form onSubmit={handleLocation} autoComplete="off">
-              <div className="addCity">
-                <p>new city:</p>
-                <input
-                  name="newCity"
-                  type="text"
-                  placeholder="new city"
-                  required
-                  onChange={handleChangeCity}
-                ></input>
-                <br></br>
-              </div>
-              <div className="addState">
-                <p>new state:</p>
-                <input
-                  name="newState"
-                  type="text"
-                  placeholder="new state"
-                  required
-                  onChange={handleChangeState}
-                ></input>
-                <br></br>
-              </div>
-              <input className="Btn" type="submit" value="update"></input>
-            </form>
+        <div className="userInfo">
+          <div className="basicInfo">
+            <h1>Basic Info</h1>
+            <p>Email: {email}</p>
+            <p>City: {userData.city}</p>
+            <p>State: {userData.state}</p>
+            {/* add update function! */}
+          </div>
+          <div>
+            <div className="updateLocation">
+              <p>to update location:</p>
+              <form onSubmit={handleLocation} autoComplete="off">
+                <div className="addCity">
+                  <p>new city:</p>
+                  <input
+                    name="newCity"
+                    type="text"
+                    placeholder="new city"
+                    required
+                    onChange={handleChangeCity}
+                  ></input>
+                </div>
+                <div className="addState">
+                  <p>new state:</p>
+                  <input
+                    name="newState"
+                    type="text"
+                    placeholder="new state"
+                    required
+                    onChange={handleChangeState}
+                  ></input>
+                  <br></br>
+                  <br></br>
+                </div>
+                <input className="Btn" type="submit" value="update"></input>
+              </form>
+            </div>
           </div>
         </div>
-        <div className="add">
-          <form onSubmit={handleAddArtist} autoComplete="off">
-            <div className="addArtists">
-              <h2>Add Artists:</h2>
-              <input
-                name="artistName"
-                type="text"
-                placeholder="Artist's Name"
-                required
-                onChange={handleChangeAddArtist}
-              ></input>
-              <br></br>
+        <div className="music">
+          <div className="add1">
+            <div className="add">
+              <form onSubmit={handleAddArtist} autoComplete="off">
+                <div className="addArtists">
+                  <h2>Add Artists:</h2>
+                  <input
+                    name="artistName"
+                    type="text"
+                    placeholder="Artist's Name"
+                    required
+                    onChange={handleChangeAddArtist}
+                  ></input>
+                  <br></br>
+                </div>
+                <input className="Btn" type="submit" value="add"></input>
+              </form>
+              <form onSubmit={handleAddGenre} autoComplete="off">
+                <div className="addGenre">
+                  <h2>Add Genre:</h2>
+                  <input
+                    name="genreName"
+                    type="text"
+                    placeholder="Genre Name"
+                    required
+                    onChange={handleChangeAddGenre}
+                  ></input>
+                  <br></br>
+                </div>
+                <input className="Btn" type="submit" value="add"></input>
+              </form>
             </div>
-            <input className="Btn" type="submit" value="add"></input>
-          </form>
-          <form onSubmit={handleAddGenre} autoComplete="off">
-            <div className="addGenre">
-              <h2>Add Genre:</h2>
-              <input
-                name="genreName"
-                type="text"
-                placeholder="Genre Name"
-                required
-                onChange={handleChangeAddGenre}
-              ></input>
-              <br></br>
+          </div>
+          <div className="current">
+            <div className="currentArtists">
+              <h2>Current Artists Tracked:</h2>
+              <div className="artistList">
+              <ul>
+                {currArtists.map((artist, i) => (
+                  <li key={artist + i}>{artist}</li>
+                ))}
+              </ul>
+              </div>
             </div>
-            <input className="Btn" type="submit" value="add"></input>
-          </form>
-        </div>
-      </div>
-      <div className="current">
-        <div className="currentArtists">
-          <h2>Current Artists Tracked:</h2>
-          <ul>
-            {currArtists.map((artist, i) => (
-              <li key={artist + i}>{artist}</li>
-            ))}
-          </ul>
-        </div>
-        <div className="currentGenres">
-          <h2>Current Genres Tracked:</h2>
-          <ul>
-            {currGenres.map((genre, i) => (
-              <li key={genre + i}>{genre}</li>
-            ))}
-          </ul>
+            <div className="currentGenres">
+              <h2>Current Genres Tracked:</h2>
+              <div className="genreList">
+              <ul>
+                {currGenres.map((genre, i) => (
+                  <li key={genre + i}>{genre}</li>
+                ))}
+              </ul>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
