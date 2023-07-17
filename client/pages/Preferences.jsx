@@ -5,8 +5,9 @@ import { Card, CardContent, Typography, Breadcrumbs } from '@mui/material';
 
 export default function Preference() {
   const location = useLocation();
-  // const { email } = location.state;
-  const email = 'haliahaynes';
+  console.log('location: ', location);
+  const { email } = location.state;
+  // const email = 'haliahaynes';
   const [userData, setUserData] = useState({});
   const [newArtist, setNewArtist] = useState('');
   const [currArtists, setCurrArtists] = useState([]);
@@ -16,7 +17,6 @@ export default function Preference() {
   useEffect(() => {
     const fetchingData = async () => {
       try {
-        const email = 'haliahaynes';
         // const {email} = location.state
         const response = await fetch(
           `/api/preferences?email=${encodeURIComponent(email)}`,
@@ -92,7 +92,7 @@ export default function Preference() {
     try {
       const addInfo = {
         email: email,
-        artists: [...currArtists, newArtist],
+        artists: newArtist,
       };
       await fetch(`/api/preferences?email=${encodeURIComponent(email)}`, {
         method: 'PATCH',
@@ -121,7 +121,7 @@ export default function Preference() {
     try {
       const addInfo = {
         email: email,
-        genres: [...currGenres, newGenre],
+        genres: newGenre,
       };
       await fetch(`/api/preferences?email=${encodeURIComponent(email)}`, {
         method: 'PATCH',
@@ -165,21 +165,21 @@ export default function Preference() {
               <p>to update location:</p>
               <form onSubmit={handleLocation} autoComplete="off">
                 <div className="addCity">
-                  <p>new city:</p>
+                  <p>New City:</p>
                   <input
                     name="newCity"
                     type="text"
-                    placeholder="new city"
+                    placeholder="New City"
                     required
                     onChange={handleChangeCity}
                   ></input>
                 </div>
                 <div className="addState">
-                  <p>new state:</p>
+                  <p>New State:</p>
                   <input
                     name="newState"
                     type="text"
-                    placeholder="new state"
+                    placeholder="New State"
                     required
                     onChange={handleChangeState}
                   ></input>
