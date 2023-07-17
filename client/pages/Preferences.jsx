@@ -6,7 +6,7 @@ import { Card, CardContent, Typography, Breadcrumbs } from '@mui/material';
 export default function Preference() {
   const location = useLocation();
   console.log('location: ', location);
-  const { email } = location.state;
+  const { email, username, accessToken } = location.state;
   // const email = 'haliahaynes';
   const [userData, setUserData] = useState({});
   const [newArtist, setNewArtist] = useState('');
@@ -145,7 +145,7 @@ export default function Preference() {
           <Link
             underline="hover"
             color="inherit"
-            to={{ pathname: '/home', state: { email: email } }}
+            to={{ pathname: '/home', state: { email, username, accessToken } }}
           >
             HOME PAGE
           </Link>
@@ -155,6 +155,7 @@ export default function Preference() {
         <div className="userInfo">
           <div className="basicInfo">
             <h1>Basic Info</h1>
+            <p>Username: {username}</p>
             <p>Email: {email}</p>
             <p>City: {userData.city}</p>
             <p>State: {userData.state}</p>

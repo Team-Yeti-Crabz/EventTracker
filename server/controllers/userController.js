@@ -39,8 +39,8 @@ userController.getUserInfo = async (req, res, next) => {
 };
 
 userController.createUser = async (req, res, next) => {
-  const { email, city, state } = req.body;
-  if (!email || !city || !state)
+  const { email, city, state, accessToken, username } = req.body;
+  if (!email || !city || !state || !username || !accessToken)
     return next({
       log: `userController.createUser ERROR: missing email or location on req body`,
       message: {
@@ -48,7 +48,12 @@ userController.createUser = async (req, res, next) => {
       },
     });
   try {
-    const newUser = await Users.create({ email, location: { city, state } });
+    const newUser = await Users.create({
+      email,
+      accessToken,
+      username,
+      location: { city, state },
+    });
     res.locals.newUser = newUser;
     return next();
   } catch (err) {
@@ -144,13 +149,19 @@ userController.updateUserSpotify = async (req, res, next) => {
 //add middleware to send access token to database
 userController.addToken = async (req, res, next) => {
   console.log('entering addToken');
-  const accessToken = res.locals.accessToken;
+  const accessToken = req.body.accessToken;
   const email = res.locals.userEmail;
+  const username = res.locals.username;
+  const exists = false;
   try {
-    const updatedUser = await Users.findOneAndUpdate(
+    const userDoc = await Users.findOneAndUpdate(
       { email: email },
-      { accessToken }
+      { accessToken, username },
+      { new: true }
     );
+    if (userDoc) exists = true;
+    res.locals.exists = exists;
+    console.log('res.locals.exists', res.locals.exists);
     console.log('leaving addToken');
     return next();
   } catch (err) {
