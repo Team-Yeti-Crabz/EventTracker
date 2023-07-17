@@ -11,19 +11,29 @@ export default function Callback() {
     const [userType, setUserType] = useState('');
     const [email, setEmail] = useState('');
 
+    // get the redirect url path (this includes the code query we will need to send to spotify to retrieve user specific tokens)
+    const href = window.location.href;
+    const index = href.indexOf('callback');
+    const path = '/api/authentication/' + href.slice(index);
+    console.log( 'path: ', path);
+
     // use code in request query to get access and refresh tokens from spotify
     const getTokens = async () => {
       try {
-          const response = await fetch('/api/authentication/callback', {
+          
+          const response = await fetch(path, {
           method: 'GET',
           headers: {
             'Content-Type': 'Application/JSON'
           }
         })
       //   const initiateAuth = await response.status;
-        if (response.status === 200) {
-          setConfirm(true);
-          return checkUserType();
+        console.log('getTokens fetch response: ', response);
+      if (response.status === 200) {
+        
+        // TODO: UNCOMMENT BELOW LINES
+        //   setConfirm(true);
+        //   return checkUserType();
         }
 
       }  catch (err) {
@@ -44,6 +54,7 @@ export default function Callback() {
 
         // if user already exists in db
         // setUserType('old')
+        console.log('entered Callback.jsx checkUserType');
 
         return;
     }
@@ -58,17 +69,17 @@ export default function Callback() {
   }
 
 
-  useEffect(() => {
-    let path = '';
-    if (confirmed === true && userType === 'new') {
-        path = '/signup';
-    }
-    else if (confirmed === true && userType === 'old') {
-        path = '/home';
-    }
-    return routeChange(path);
+//   useEffect(() => {
+//     let path = '';
+//     if (confirmed === true && userType === 'new') {
+//         path = '/signup';
+//     }
+//     else if (confirmed === true && userType === 'old') {
+//         path = '/home';
+//     }
+//     return routeChange(path);
 
-  }, [userType]);
+//   }, [userType]);
 
   getTokens();
 

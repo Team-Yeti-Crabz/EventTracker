@@ -15,7 +15,7 @@ router.get('/', authController.initializeAuth, (req, res) => {
 // if the user's credentials were authenticated, make get request to obtain refresh and access tokens from spotify
 // TODO: if succesful, send the logged res.locals info to server to store for duration of user session
 // authController.checkState, authController.getTokens, 
-router.get('/callback',  (req, res) => {
+router.get('/callback', authController.checkState, authController.getTokens, (req, res) => {
     console.log('acces token: ', res.locals.accessToken);
     console.log('refresh token: ', res.locals.refreshToken);
     console.log('options to pass into spotify api requests: ', res.locals.options);

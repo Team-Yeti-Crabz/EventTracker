@@ -105,7 +105,7 @@ authController.checkState = (req, res, next) => {
 authController.getTokens = (req, res, next) => {
     const code = req.query.code || null;
     // ! WHY IS THIS NOT LOGGING
-    console.log('COOOOOODEDEEDOEDOEODE: ', code);
+    console.log('CODE: ', code);
     // clear statekey that was stored on cookie as it's no longer needed. Will be using access and refresh token to communicate with spotify api
     res.clearCookie(stateKey);
     const authOptions = {
@@ -124,13 +124,15 @@ authController.getTokens = (req, res, next) => {
     // request refresh and access tokens from spotify
     request.post(authOptions, function(error, response, body) {
       if (!error && response.statusCode === 200) {
-
+        console.log('body: ', body);
+        // Object.values(body)[0]
+        // Object.values(body)[3]
         res.locals.accessToken = body.access_token;
         res.locals.refreshToken = body.refresh_token;
 
         res.locals.options = {
           url: 'https://api.spotify.com/v1/me',
-          headers: { 'Authorization': 'Bearer ' + access_token },
+          headers: { 'Authorization': 'Bearer ' + res.locals.refreshToken },
           json: true
         };
         return next();
