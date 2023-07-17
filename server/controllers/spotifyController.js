@@ -1,19 +1,28 @@
 const spotifyController = {};
 
 //get request to SeatGeek based on user preferences
-spotifyController.getEvents = async (req, res, next) => {};
+spotifyController.getTopArtists = async (req, res, next) => {
+  const accessToken = res.locals.accessToken;
 
-const searchParams = {
-  method: 'GET',
-  headers: {
-    'Content-Type': 'application/json',
-    Authorization: 'Bearer ' + accessToken,
-  },
+  const searchParams = {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer ' + accessToken,
+    },
+  };
+  const response = await fetch(
+    'https://api.spotify.com/v1/me/top/artists?time_range=medium_term&limit=10&offset=0',
+    searchParams
+  );
+  const data = await response.json().items;
+  const artistArray = [];
+  data.forEach((el) => {
+    artistArray.push(el.name);
+  });
+  res.locals.spotifyArtists = artistArray;
 };
-const response = await fetch(
-  'https://api.spotify.com/v1/me/top/artists?time_range=medium_term&limit=10&offset=0',
-  searchParams
-);
+
 module.exports = spotifyController;
 
 //--> Function below is a get request to search for a specific artist using user input that is not seen<--
