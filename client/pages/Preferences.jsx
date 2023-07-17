@@ -9,7 +9,9 @@ export default function Preference() {
   // const { email } = location.state;
   const email = 'haliahaynes';
   const [userData, setUserData] = useState({});
+  const [newArtist, setNewArtist] = useState('');
   const [currArtists, setCurrArtists] = useState([]);
+  const [newGenre, setNewGenre] = useState('');
   const [currGenres, setCurrGenres] = useState([]);
 
   useEffect(() => {
@@ -78,21 +80,28 @@ export default function Preference() {
   //changing artistArr's state
   const handleChangeAddArtist = (e) => {
     const newArtist = e.target.value;
-    setCurrArtists((curr) => [...curr, newArtist]);
+    setNewArtist(newArtist);
   };
   //sending a PATCH request with updated artists array
   const handleAddArtist = async (e) => {
     e.preventDefault();
+    if (newArtist.trim() === '') return;
+    if (currArtists.includes(newArtist)) {
+      setNewArtist('');
+      return;
+    }
     try {
       const addInfo = {
         email: email,
-        artists: currArtists,
+        artists: [...currArtists, newArtist],
       };
       await fetch(`/api/preferences?email=${encodeURIComponent(email)}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(addInfo),
       });
+      setCurrArtists((curr) => [...curr, newArtist]);
+      setNewArtist('');
     } catch (err) {
       console.log(err);
     }
@@ -100,21 +109,28 @@ export default function Preference() {
   //changing genre's state
   const handleChangeAddGenre = (e) => {
     const newGenre = e.target.value;
-    setCurrGenres((curr) => [...curr, newGenre]);
+    setNewGenre(newGenre);
   };
   //sending a PATCH request with updated genre array
   const handleAddGenre = async (e) => {
     e.preventDefault();
+    if (newGenre.trim() === '') return;
+    if (currGenres.includes(newGenre)) {
+      setNewGenre('');
+      return;
+    }
     try {
       const addInfo = {
         email: email,
-        genres: currGenres,
+        genres: [...currGenres, newGenre],
       };
       await fetch(`/api/preferences?email=${encodeURIComponent(email)}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(addInfo),
       });
+      setCurrGenres((curr) => [...curr, newGenre]);
+      setNewGenre('');
     } catch (err) {
       console.log(err);
     }

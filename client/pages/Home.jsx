@@ -1,17 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import '../styles.css';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
+import { Card, CardContent, Typography } from '@mui/material';
 
 export default function HomePage() {
   const location = useLocation();
-  //allows you to navigate/manipulate the browser history
   // const { email } = location.state;
+  const email = 'haliahaynes';
   const [userData, setUserData] = useState({});
+  const [artists, setArtists] = useState([]);
+  const [genres, setGenres] = useState([]);
 
   useEffect(() => {
-    const fetchingData = async () => {
+    const fetchingUserData = async () => {
       try {
-        const { email } = location.state;
         const response = await fetch(
           `/api/preferences?email=${encodeURIComponent(email)}`,
           {
@@ -22,22 +24,138 @@ export default function HomePage() {
         const data = await response.json();
         console.log(data);
         // {
-        // email
+        // email:
         // location: {city:, state:}
         // artists:[1,2,3]
         // genres: [a,b,c]
         // }
         setUserData(data);
-      } catch {
-        throw new Error('Error with initial fetch request!');
+      } catch (err) {
+        throw new Error('Error with initial fetch request!', err);
       }
     };
-    fetchingData();
-  }, [location]);
+    fetchingUserData();
+
+    const fetchingArtists = async () => {
+      try {
+        const response = await fetch(
+          `/api/home/artist?email=${encodeURIComponent(email)}`,
+          {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' },
+          }
+        );
+        const artists = await response.json();
+        // {
+        // artistShows:[
+        // {
+        // artist: ,
+        // genre: ,
+        // price: ,
+        // date: ,
+        // venue: ,
+        // eventUrl: ,
+        // imgUrl:
+        // },{},{}]
+        // }
+        setArtists(artists.artistShows);
+      } catch (err) {
+        throw new Error('Error with artist fetch request!', err);
+      }
+    };
+    fetchingArtists();
+
+    const fetchingGenres = async () => {
+      try {
+        const response = await fetch(
+          `/api/home/genre?email=${encodeURIComponent(email)}`,
+          {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' },
+          }
+        );
+        const genres = await response.json();
+        // {
+        // artistShows:[
+        // {
+        // artist: ,
+        // genre: ,
+        // price: ,
+        // date: ,
+        // venue: ,
+        // eventUrl: ,
+        // imgUrl:
+        // },{},{}]
+        // }
+        const returned = genres.artistShows.slice(0, 30);
+        setGenres(returned);
+      } catch (err) {
+        throw new Error('Error with genre fetch request!', err);
+      }
+    };
+    fetchingGenres();
+  });
 
   return (
     <div className="homePage">
-      <div className="home"> Made it to homepage!</div>
+      <div className="home"> Welcome, {email}!</div>
+      <button className="Btn">
+        <Link to={{ pathname: '/preferences', state: { email: email } }}>
+          Preferences
+        </Link>
+      </button>
+      <div className="showBox">
+        <h1>Upcoming Shows In Your Area</h1>
+        <div className="artistShows">
+          <h2>Artist Shows</h2>
+          {artists.forEach((artist) => (
+            <Card key={artist.artist} className="card">
+              <CardContent>
+                <Typography variant="h5" component="h3">
+                  {artist.artist}
+                </Typography>
+                <Typography variant="body1" component="p">
+                  Genre: {artist.genre}
+                </Typography>
+                <Typography variant="body1" component="p">
+                  Date: {artist.date}
+                </Typography>
+                <Typography variant="body1" component="p">
+                  Location: {artist.venue}
+                </Typography>
+                <Typography variant="body1" component="p">
+                  Price: {artist.price}
+                </Typography>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+
+        <div className="genreShows">
+          <h2>Genre Shows</h2>
+          {genres.forEach((genre) => (
+            <Card key={genre.artist} className="card">
+              <CardContent>
+                <Typography variant="h5" component="h3">
+                  {genre.artist}
+                </Typography>
+                <Typography variant="body1" component="p">
+                  Genre: {genre.genre}
+                </Typography>
+                <Typography variant="body1" component="p">
+                  Date: {genre.date}
+                </Typography>
+                <Typography variant="body1" component="p">
+                  Location: {genre.venue}
+                </Typography>
+                <Typography variant="body1" component="p">
+                  Price: {genre.price}
+                </Typography>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      </div>
     </div>
   );
 }
