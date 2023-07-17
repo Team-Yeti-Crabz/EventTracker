@@ -6,7 +6,8 @@ export default function Preference() {
   //Manage states: location, artists, genres
   const location = useLocation();
   //allows you to navigate/manipulate the browser history
-  const { email } = location.state;
+  // const { email } = location.state;
+  const email = 'haliahaynes';
   const [userData, setUserData] = useState({});
   const [currArtists, setCurrArtists] = useState([]);
   const [currGenres, setCurrGenres] = useState([]);
@@ -14,6 +15,8 @@ export default function Preference() {
   useEffect(() => {
     const fetchingData = async () => {
       try {
+        const email = 'haliahaynes';
+        // const {email} = location.state
         const response = await fetch(
           `/api/preferences?email=${encodeURIComponent(email)}`,
           {
@@ -25,8 +28,7 @@ export default function Preference() {
         console.log(data);
         // {
         // email
-        // city:
-        // state:
+        // location: {city:, state:}
         // artists:[1,2,3]
         // genres: [a,b,c]
         // }
@@ -37,8 +39,8 @@ export default function Preference() {
         throw new Error('Error with initial fetch request!');
       }
     };
-    fetchingData(email);
-  }, [email]);
+    fetchingData();
+  }, [location]);
 
   //changing state's state
   const handleChangeCity = (e) => {
@@ -121,7 +123,9 @@ export default function Preference() {
   return (
     <div className="preferencesPage">
       <button className="Btn">
-        <Link to={{ pathname: '/home' }}>Home Page</Link>
+        <Link to={{ pathname: '/home', state: { email: email } }}>
+          Home Page
+        </Link>
       </button>
       <div className="preferences">
         <div className="basicInfo">
