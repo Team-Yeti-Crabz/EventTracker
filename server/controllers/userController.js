@@ -122,13 +122,13 @@ userController.updateUserSpotify = async (req, res, next) => {
       { artists },
       { new: true }
     );
-    res.locals.updatedUser = updatedUser;
+    res.locals.updatedUserSpotify = updatedUserSpotify;
     return next();
   } catch (err) {
     return next({
-      log: `userController.createUser ERROR: trouble creating new user`,
+      log: `userController.createUserSpotify ERROR: trouble updating user with Spotify info`,
       message: {
-        err: `userController.createUser ERROR: ${err}`,
+        err: `userController.createUserSpotify ERROR: ${err}`,
       },
     });
   }
