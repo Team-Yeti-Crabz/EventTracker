@@ -1,38 +1,81 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import '../styles.css';
-
-export default function Callback() {
-//heavy CSS!
-
-// expects code from spotify
-// if not give error
-//  if so 
+import { useNavigate } from "react-router-dom";
 
 // user is redirected to '/callback' from spotify after entering their credentials
 // if the user's credentials were authenticated, make get request to obtain refresh and access tokens from spotify
-//   componentDidMount() {
-//     const getTokens = async () => {
-//       try {
-//         // get request for spotify's authentication page
-//         console.log('entered signin try');
-//         const intitiateAuth = await fetch('/api/authentication/callback', {
-//           method: 'GET',
-//           headers: {
-//             'Content-Type': 'Application/JSON'
-//       }
-//     })
-//     // if user successfully signs in with spotify, then expect a response with a state parameter for us to compare to the one we randomly generated for the user in our get request
-//     console.log( 'intitiateAuth response from spotify: ', intitiateAuth);
+export default function Callback() {
+    //heavy CSS!
 
-//       } catch (err) {
-//     console.log('error in signing in: ', err);
-//   }
-//     }
-//   }
+    const [confirmed, setConfirm] = useState(false);
+    const [userType, setUserType] = useState('');
+    const [email, setEmail] = useState('');
+
+    // use code in request query to get access and refresh tokens from spotify
+    const getTokens = async () => {
+      try {
+          const response = await fetch('/api/authentication/callback', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'Application/JSON'
+          }
+        })
+      //   const initiateAuth = await response.status;
+        if (response.status === 200) {
+          setConfirm(true);
+          return checkUserType();
+        }
+
+      }  catch (err) {
+        return console.log('error making fetch request to server to retrieve spotify tokens: ', err);
+      }
+    }
+
+    
+
+    // TODO: get user email from spotify and check db to see if user exists
+    const checkUserType = async () => {
+        //TODO: get request to spotify to get user email
+        // setEmail(response);
+
+        // TODO: check db for user email
+        // if user is not in db
+        // setUserType('new');
+
+        // if user already exists in db
+        // setUserType('old')
+
+        return;
+    }
+    
+    
+
+
+
+  const navigate = useNavigate(); 
+  const routeChange = (path) =>{ 
+      navigate(path);
+  }
+
+
+  useEffect(() => {
+    let path = '';
+    if (confirmed === true && userType === 'new') {
+        path = '/signup';
+    }
+    else if (confirmed === true && userType === 'old') {
+        path = '/home';
+    }
+    return routeChange(path);
+
+  }, [userType]);
+
+  getTokens();
 
   return (
     <div >
-        <h1>callback</h1>
+        <h2>Confirming Spotify authentication...</h2>
+        <p>Please wait</p>
     </div>
   );
 }

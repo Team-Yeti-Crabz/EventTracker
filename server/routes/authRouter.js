@@ -16,10 +16,9 @@ router.get('/', authController.initializeAuth, (req, res) => {
 // TODO: if succesful, send the logged res.locals info to server to store for duration of user session
 // authController.checkState, authController.getTokens, 
 router.get('/callback',  (req, res) => {
-    console.log('received redirect from spotify');
-    // console.log('acces token: ', res.locals.accessToken);
-    // console.log('refresh token: ', res.locals.refreshToken);
-    // console.log('options to pass into spotify api requests: ', res.locals.options);
+    console.log('acces token: ', res.locals.accessToken);
+    console.log('refresh token: ', res.locals.refreshToken);
+    console.log('options to pass into spotify api requests: ', res.locals.options);
     return res.sendStatus(200);
 
 });

@@ -8,7 +8,6 @@ import Signin from './pages/Signin.jsx';
 import Signup from './pages/Signup.jsx';
 import Preferences from './pages/Preferences.jsx';
 import ProtectedRoute from './components/ProtectedRoute.jsx';
-import Signin from './pages/Signin.jsx';
 import Callback from './pages/Callback.jsx';
 
 
@@ -20,12 +19,6 @@ const App = () => {
         {/* Add each page as a route */}
         <Route path="/" element={<Signin />} />
         <Route path="/callback" element={<Callback />} />
-          {/* <Route path="authentication" >
-            <Route path="callback" element={<Callback />} />
-
-          </Route >
-         */}
-        {/* </Route> */}
         <Route path="/signup" element={<Signup />} />
         <Route path="/home" element={<Home />} />
         <Route path="/preferences" element={<Preferences />} />
