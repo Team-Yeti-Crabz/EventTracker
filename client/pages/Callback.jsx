@@ -31,10 +31,10 @@ export default function Callback() {
           }
         })
       //   const initiateAuth = await response.status;
-        console.log('getTokens fetch response: ', response.json());
-      if (response.status === 200) {
-          return checkUserType();
-        }
+        console.log('getTokens fetch response: ', response);
+      // if (response.status === 200) {
+      // }
+      return checkUserType();
 
       }  catch (err) {
         return console.log('error making fetch request to server to retrieve spotify tokens: ', err);
@@ -47,14 +47,13 @@ export default function Callback() {
         console.log('entered Callback.jsx checkUserType');
         //TODO: get request to spotify to get user email and server will check db for existing user
         try {
-          // TODO: uncomment fetch
-          // const response = await fetch('api/authentication/email', {
-          //   method: 'GET',
-          //   headers: {
-          //     'Content-Type': 'Application/JSON'
-          //   }
-          // })
-          // const checkUser = response.json();
+          const response = await fetch('api/authentication/email', {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'Application/JSON'
+            }
+          })
+          const checkUser = response.json();
           /* response from back end
           {
             email: stringify,
@@ -62,13 +61,14 @@ export default function Callback() {
           }
           */
 
-          // TEST
-          const checkUser = {
-            email: 'haliahaynes',
-            exists: true
-          }
+          // // TEST
+          // const checkUser = {
+          //   email: 'bdiso',
+          //   exists: false
+          // }
           
-          setEmail(checkUser.email);
+          // const updatedEmail = setEmail(checkUser.email);
+          console.log('updatedEmail: ', checkUser.email)
           let redirect = '';
           // TODO: check db for user email
           // if user is not in db
@@ -81,7 +81,7 @@ export default function Callback() {
           }
 
           return navigate(redirect, {
-            email: email
+            state: {email: checkUser.email}
           })
           
         } catch (err) {
@@ -91,8 +91,6 @@ export default function Callback() {
     
     
   getTokens();
-  // checkUserType();
-
 
   return (
     <div className='callback'>

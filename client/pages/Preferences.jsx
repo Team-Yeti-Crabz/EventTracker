@@ -5,6 +5,7 @@ import { Card, CardContent, Typography, Breadcrumbs } from '@mui/material';
 
 export default function Preference() {
   const location = useLocation();
+  console.log('location: ', location);
   const { email } = location.state;
   // const email = 'haliahaynes';
   const [userData, setUserData] = useState({});
