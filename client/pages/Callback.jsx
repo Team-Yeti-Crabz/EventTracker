@@ -7,8 +7,6 @@ import { useNavigate } from 'react-router-dom';
 export default function Callback() {
   //heavy CSS!
 
-  const [email, setEmail] = useState('');
-
   const navigate = useNavigate();
   // const routeChange = (path) =>{
   //     navigate(path);
