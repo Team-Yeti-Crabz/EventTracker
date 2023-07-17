@@ -7,7 +7,7 @@ const router = express.Router();
 
 //add routers as needed
 router.post('/', userController.createUser, (req, res) => {
-  return res.status(200).json(res.locals.newUser);
+  return res.sendStatus(200);
 });
 
 module.exports = router;

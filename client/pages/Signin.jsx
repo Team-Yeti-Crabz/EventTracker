@@ -7,6 +7,7 @@ import '../styles.css';
 export default function Signin() {
   // const [state, setState] = useState('');
   const [url, setUrl] = useState('');
+  const [fetched, setFetched] = useState(false);
 
   // fetch request to server to set random state and store on cookie and generate correct url for client to go to via Sign In button
   // ! client must go to link themseleves. you cannot make a request to the server to redirect them there otherwise will get cors error
@@ -29,9 +30,13 @@ export default function Signin() {
     }
   };
 
+  if (fetched === false) {
+    setFetched(true);
+  }
+
   useEffect(() => {
     redirectUrl();
-  }, []);
+  }, [fetched]);
 
   // let navigate = useNavigate();
   // const routeChange = () =>{
@@ -68,10 +73,16 @@ const handleSignIn = async () => {
 
   return (
     <div className="signinPage">
-      <div className="signin"> <h1>Welcome to EventTracker</h1></div>
-      <p>Please <button type="button" onClick={handleRedirect}>
-        Sign In
-      </button> with Spotify to verify your account
+      <div className="signin">
+        {' '}
+        <h1>Welcome to EventTracker</h1>
+      </div>
+      <p>
+        Please{' '}
+        <button type="button" onClick={handleRedirect}>
+          Sign In
+        </button>{' '}
+        with Spotify to verify your account
       </p>
     </div>
   );

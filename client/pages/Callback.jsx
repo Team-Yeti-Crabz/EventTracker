@@ -6,7 +6,9 @@ import { useNavigate } from 'react-router-dom';
 // if the user's credentials were authenticated, make get request to obtain refresh and access tokens from spotify
 export default function Callback() {
   //heavy CSS!
-
+  
+  const [email, setEmail] = useState('');
+  const [fetched, setFetched] = useState(false);
   const navigate = useNavigate();
   // const routeChange = (path) =>{
   //     navigate(path);
@@ -29,9 +31,12 @@ export default function Callback() {
       });
       //   const initiateAuth = await response.status;
       console.log('getTokens fetch response: ', response);
+      const accessToken = await response.json();
       // if (response.status === 200) {
       // }
-      return checkUserType();
+      console.log('access Token:', accessToken);
+      console.log(typeof accessToken);
+      return checkUserType(accessToken);
     } catch (err) {
       return console.log(
         'error making fetch request to server to retrieve spotify tokens: ',
@@ -41,17 +46,19 @@ export default function Callback() {
   };
 
   // TODO: get user email from spotify and check db to see if user exists
-  const checkUserType = async () => {
+  const checkUserType = async (accessToken) => {
     console.log('entered Callback.jsx checkUserType');
     //TODO: get request to spotify to get user email and server will check db for existing user
     try {
       const response = await fetch('api/authentication/email', {
-        method: 'GET',
+        method: 'POST',
         headers: {
           'Content-Type': 'Application/JSON',
         },
+        body: JSON.stringify({ accessToken: accessToken }),
       });
-      const checkUser = response.json();
+      const checkUser = await response.json();
+      console.log('checkUser', checkUser);
       /* response from back end
           {
             email: stringify,
@@ -77,16 +84,25 @@ export default function Callback() {
       else if (checkUser.exists === true) {
         redirect = '/home';
       }
-
+      console.log('redirect', redirect);
       return navigate(redirect, {
-        state: { email: checkUser.email },
+        state: {
+          email: checkUser.email,
+          accessToken: checkUser.accessToken,
+          username: checkUser.username,
+        },
       });
     } catch (err) {
       return console.log('error in checkUserType');
     }
   };
 
-  getTokens();
+  if (fetched === false) {
+    setFetched(true);
+  }
+  useEffect(() => {
+    getTokens();
+  }, [fetched]);
 
   return (
     <div className="signinPage">

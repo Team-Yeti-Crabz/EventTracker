@@ -4,7 +4,8 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 
 export default function Signup() {
   const location = useLocation();
-  const {email} = location.state;
+  const { email, accessToken, username } = location.state;
+  console.log('email', email, 'accessToken', accessToken, 'username', username);
   const [city, setUserCity] = useState('');
   const [state, setUserState] = useState('');
   const navigate = useNavigate();
@@ -21,9 +22,10 @@ export default function Signup() {
       setUserState(userState);
       const signupReq = {
         email: email,
+        username: username,
         city: userCity,
         state: userState,
-        //add tokens
+        accessToken: accessToken,
       };
 
       await fetch('/api/signup', {
@@ -32,7 +34,7 @@ export default function Signup() {
         body: JSON.stringify(signupReq),
       });
       navigate('/preferences', {
-        state: { email: email },
+        state: { email, accessToken, username },
       });
     } catch (err) {
       console.log('handleNewUser error:', err);
@@ -42,7 +44,7 @@ export default function Signup() {
   return (
     <div className="signupPage">
       <div className="signup">
-        <h1>It looks like you're new to EventTracker. Welcome, {email}!</h1>
+        <h1>It looks like you're new to EventTracker. Welcome, {username}!</h1>
         {/* send a post request to the database with the location */}
         {/* make sure to pass in email from OAuth as well! */}
         <form onSubmit={handleNewUser} autoComplete="off" id="signupinfo">

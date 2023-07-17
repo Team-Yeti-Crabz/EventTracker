@@ -5,7 +5,7 @@ import { Card, CardContent, Typography, Breadcrumbs } from '@mui/material';
 
 export default function HomePage() {
   const location = useLocation();
-  const { email } = location.state;
+  const { email, username, accessToken } = location.state;
   const [userData, setUserData] = useState({});
   const [artists, setArtists] = useState([]);
   const [genres, setGenres] = useState([]);
@@ -85,13 +85,13 @@ export default function HomePage() {
             underline="hover"
             color="inherit"
             to="/preferences"
-            state={{ email: email }}
+            state={{ email, username, accessToken }}
           >
             PREFERENCES
           </Link>
         </Breadcrumbs>
       </div>
-      <div className="home"> Welcome, {email}!</div>
+      <div className="home"> Welcome, {username}!</div>
 
       <div className="showBox">
         <h1>Upcoming Shows In Your Area</h1>
