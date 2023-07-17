@@ -92,7 +92,7 @@ export default function Preference() {
     try {
       const addInfo = {
         email: email,
-        artists: [...currArtists, newArtist],
+        artists: newArtist,
       };
       await fetch(`/api/preferences?email=${encodeURIComponent(email)}`, {
         method: 'PATCH',
@@ -121,7 +121,7 @@ export default function Preference() {
     try {
       const addInfo = {
         email: email,
-        genres: [...currGenres, newGenre],
+        genres: newGenre,
       };
       await fetch(`/api/preferences?email=${encodeURIComponent(email)}`, {
         method: 'PATCH',

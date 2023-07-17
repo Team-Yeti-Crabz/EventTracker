@@ -68,10 +68,11 @@ const handleSignIn = async () => {
 
   return (
     <div className="signinPage">
-      <div className="signin"> Welcome to EventTracker</div>
-      <button type="button" onClick={handleRedirect}>
+      <div className="signin"> <h1>Welcome to EventTracker</h1></div>
+      <p>Please <button type="button" onClick={handleRedirect}>
         Sign In
-      </button>
+      </button> with Spotify to verify your account
+      </p>
     </div>
   );
 }

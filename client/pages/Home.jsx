@@ -84,7 +84,8 @@ export default function HomePage() {
           <Link
             underline="hover"
             color="inherit"
-            to='/preferences' state={{ email: email}}
+            to="/preferences"
+            state={{ email: email }}
           >
             PREFERENCES
           </Link>
