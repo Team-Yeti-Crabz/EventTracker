@@ -165,21 +165,21 @@ export default function Preference() {
               <p>to update location:</p>
               <form onSubmit={handleLocation} autoComplete="off">
                 <div className="addCity">
-                  <p>new city:</p>
+                  <p>New City:</p>
                   <input
                     name="newCity"
                     type="text"
-                    placeholder="new city"
+                    placeholder="New City"
                     required
                     onChange={handleChangeCity}
                   ></input>
                 </div>
                 <div className="addState">
-                  <p>new state:</p>
+                  <p>New State:</p>
                   <input
                     name="newState"
                     type="text"
-                    placeholder="new state"
+                    placeholder="New State"
                     required
                     onChange={handleChangeState}
                   ></input>
