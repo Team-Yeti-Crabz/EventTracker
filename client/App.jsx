@@ -7,7 +7,6 @@ import Home from './pages/Home.jsx';
 import Signin from './pages/Signin.jsx';
 import Signup from './pages/Signup.jsx';
 import Preferences from './pages/Preferences.jsx';
-import ProtectedRoute from './components/ProtectedRoute.jsx';
 
 //create app HTML structure
 const App = () => {
@@ -17,22 +16,8 @@ const App = () => {
         {/* Add each page as a route */}
         <Route path="/" element={<Signin />} />
         <Route path="/signup" element={<Signup />} />
-        <Route
-          path="/home"
-          element={
-            <ProtectedRoute>
-              <Home />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/preferences"
-          element={
-            <ProtectedRoute>
-              <Preferences />
-            </ProtectedRoute>
-          }
-        />
+        <Route path="/home" element={<Home />} />
+        <Route path="/preferences" element={<Preferences />} />
       </Routes>
     </div>
   );
