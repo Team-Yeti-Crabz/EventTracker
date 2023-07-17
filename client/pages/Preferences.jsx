@@ -1,45 +1,44 @@
 import React, { useEffect, useState } from 'react';
 import '../styles.css';
-import { useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 export default function Preference() {
   //Manage states: location, artists, genres
   const location = useLocation();
-  const [email, setEmail] = useState('');
+  //allows you to navigate/manipulate the browser history
+  const { email } = location.state;
   const [userData, setUserData] = useState({});
   const [currArtists, setCurrArtists] = useState([]);
   const [currGenres, setCurrGenres] = useState([]);
 
   useEffect(() => {
-    if (location.state && location.state.email) {
-      const userEmail = location.state.email;
-      setEmail(userEmail);
-      //fetch user data object
-      const fetchingData = async () => {
-        try {
-          const response = await fetch(
-            `/api/preferences?email=${encodeURIComponent(userEmail)}`,
-            {
-              method: 'GET',
-              headers: { 'Content-Type': 'application/json' },
-            }
-          );
-          const data = await response.json();
-          // {
-          // email
-          // city:
-          // state:
-          // artists:[1,2,3]
-          // genres: [a,b,c]
-          // }
-          setUserData(data);
-        } catch {
-          throw new Error('Error with initial fetch request!');
-        }
-      };
-      fetchingData();
-    }
-  }, [location]);
+    const fetchingData = async () => {
+      try {
+        const response = await fetch(
+          `/api/preferences?email=${encodeURIComponent(email)}`,
+          {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' },
+          }
+        );
+        const data = await response.json();
+        console.log(data);
+        // {
+        // email
+        // city:
+        // state:
+        // artists:[1,2,3]
+        // genres: [a,b,c]
+        // }
+        setUserData(data);
+        setCurrArtists(data.artists);
+        setCurrGenres(data.genres);
+      } catch {
+        throw new Error('Error with initial fetch request!');
+      }
+    };
+    fetchingData(email);
+  }, [email]);
 
   //changing state's state
   const handleChangeCity = (e) => {
@@ -121,6 +120,9 @@ export default function Preference() {
 
   return (
     <div className="preferencesPage">
+      <button className="Btn">
+        <Link to={{ pathname: '/home' }}>Home Page</Link>
+      </button>
       <div className="preferences">
         <div className="basicInfo">
           <h1>Basic Info</h1>
@@ -192,17 +194,17 @@ export default function Preference() {
         <div className="currentArtists">
           <h2>Current Artists Tracked:</h2>
           <ul>
-            {currArtists.map((artist, i) => {
-              <li key={artist + i}>{artist}</li>;
-            })}
+            {currArtists.map((artist, i) => (
+              <li key={artist + i}>{artist}</li>
+            ))}
           </ul>
         </div>
         <div className="currentGenres">
           <h2>Current Genres Tracked:</h2>
           <ul>
-            {currGenres.map((genre, i) => {
-              <li key={genre + i}>{genre}</li>;
-            })}
+            {currGenres.map((genre, i) => (
+              <li key={genre + i}>{genre}</li>
+            ))}
           </ul>
         </div>
       </div>

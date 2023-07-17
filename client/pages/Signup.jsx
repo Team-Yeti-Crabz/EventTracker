@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import '../styles.css';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 export default function Signup() {
   const [email, setUserEmail] = useState('');
   const [city, setUserCity] = useState('');
   const [state, setUserState] = useState('');
+  const navigate = useNavigate();
 
   // send the location and email to the database!!
   //get access token!
@@ -13,22 +14,26 @@ export default function Signup() {
   const handleNewUser = async (e) => {
     e.preventDefault();
     try {
-      const signupReq = {
-        email: e.target.elements.email.value,
-        city: e.target.elements.city.value,
-        state: e.target.elements.state.value,
-        //add tokens
-      };
       const userEmail = e.target.elements.email.value;
       setUserEmail(userEmail);
       const userCity = e.target.elements.city.value;
       setUserCity(userCity);
       const userState = e.target.elements.state.value;
       setUserState(userState);
+      const signupReq = {
+        email: userEmail,
+        city: userCity,
+        state: userState,
+        //add tokens
+      };
+
       await fetch('/api/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(signupReq),
+      });
+      navigate('/preferences', {
+        state: { email: email },
       });
     } catch (err) {
       console.log('handleNewUser error:', err);
@@ -57,14 +62,7 @@ export default function Signup() {
           <input name="state" type="text" placeholder="NY" required></input>
           <br></br>
           <br></br>
-          <Link
-            to={{
-              pathname: '/preferences',
-              state: { email: email, city: city, state: state },
-            }}
-          >
-            <input className="Btn" type="submit" value="Add"></input>
-          </Link>
+          <input className="Btn" type="submit" value="Add"></input>
         </form>
       </div>
     </div>
