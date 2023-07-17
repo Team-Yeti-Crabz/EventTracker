@@ -20,13 +20,14 @@ const Schema = mongoose.Schema;
 // sets a schema for the 'users' collection
 const userSchema = new Schema({
   email: String,
+  username: String,
   location: {
     city: String,
     state: String,
   },
   artists: [String],
   genres: [String],
-  accessToken: String
+  accessToken: String,
 });
 
 // creats a model for the 'species' collection that will be part of the export
