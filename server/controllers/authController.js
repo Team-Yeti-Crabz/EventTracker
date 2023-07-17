@@ -8,7 +8,8 @@ const {spotify} = require('../models/secrets')
 
 const client_id = spotify.clientId; // Your client id
 const client_secret = spotify.clientSecret; // Your secret
-const redirect_uri = 'http://localhost:3000/'; // Your redirect uri
+// ! SET TO 8080 TO RUN IN DEV MODE. CHANGE TO 3000 IF IN PRODUCTION
+const redirect_uri = 'http://localhost:8080/api/authentication/callback'; // Your redirect uri
 
 /**
  * Generates a random string containing numbers and letters

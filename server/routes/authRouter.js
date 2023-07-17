@@ -7,6 +7,7 @@ const router = express.Router();
 
 // initially request user authentication from Spotify 
 router.get('/', authController.initializeAuth, (req, res) => {
+    console.log('reached authentication router.get redirect');
   return res.redirect('https://accounts.spotify.com/authorize?' +
     res.locals.reqAuthentication);
 });
