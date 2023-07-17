@@ -7,7 +7,6 @@ const request = require('request'); // "Request" library
 const cors = require('cors');
 const querystring = require('querystring');
 
-
 //set express functionallity to 'app' and establish PORT
 const app = express();
 const PORT = 3000;
@@ -17,7 +16,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(cors());
-
 
 //requiring in routers
 const homeRouter = require('./routes/homeRouter');
@@ -32,6 +30,8 @@ app.use('/api/preferences', preferenceRouter);
 // app.use('/api/signin', signinRouter);
 app.use('/api/signup', signupRouter);
 app.use('/api/authentication', authRouter);
+//fetch spotify user email
+//store token and email in database
 
 //serve bundle during p roduction build
 if (process.env.NODE_ENV === 'production') {
