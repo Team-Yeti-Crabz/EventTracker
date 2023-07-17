@@ -64,7 +64,7 @@ export default function Callback() {
 
           // TEST
           const checkUser = {
-            email: haliahaynes,
+            email: 'haliahaynes',
             exists: true
           }
           
