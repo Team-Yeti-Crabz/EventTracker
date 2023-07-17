@@ -100,9 +100,8 @@ body {
   flex-direction: column;
   justify-content: left;
   align-items: left;
-  width: 65%;
+  width: 40%;
   padding: 20px;
-  border-radius: 5px;
   margin-bottom: 20px;
   color: rgb(243, 240, 240);
 }
@@ -152,6 +151,9 @@ body {
   text-align: center;
 }
 
+.signupPage h1 {
+  color: rgb(236, 235, 235);
+}
 .signup {
   display: flex;
   flex-wrap: wrap;
