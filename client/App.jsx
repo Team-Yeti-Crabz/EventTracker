@@ -4,7 +4,7 @@ import { Routes, Route } from 'react-router-dom';
 // import styles from './styles.css';
 //import all pages
 import Home from './pages/Home.jsx';
-import Signin from './pages/Signin.jsx';
+// import Signin from './pages/Signin.jsx';
 import Signup from './pages/Signup.jsx';
 import Preferences from './pages/Preferences.jsx';
 import ProtectedRoute from './components/ProtectedRoute.jsx';
