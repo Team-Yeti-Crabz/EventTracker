@@ -143,11 +143,23 @@ userController.updateUserSpotify = async (req, res, next) => {
 
 //add middleware to send access token to database
 userController.addToken = async (req, res, next) => {
+  console.log('entering addToken');
   const accessToken = res.locals.accessToken;
   const email = res.locals.userEmail;
-  const updatedUser = await Users.findOneAndUpdate(
-    { email: email },
-    { accessToken }
-  );
+  try {
+    const updatedUser = await Users.findOneAndUpdate(
+      { email: email },
+      { accessToken }
+    );
+    console.log('leaving addToken');
+    return next();
+  } catch (err) {
+    return next({
+      log: `userController.updateUserSpotify ERROR: trouble updating spotify token to database`,
+      message: {
+        err: `userController.updateUserSpotify ERROR: ${err}`,
+      },
+    });
+  }
 };
 module.exports = userController;

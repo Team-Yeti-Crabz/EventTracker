@@ -24,20 +24,33 @@ spotifyController.getTopArtists = async (req, res, next) => {
 };
 
 spotifyController.getAccountInfo = async (req, res, next) => {
+  console.log('entered getAccount Info');
   const accessToken = res.locals.accessToken;
 
   const searchParams = {
     method: 'GET',
     headers: {
-      'Content-Type': 'application/json',
+      // 'Content-Type': 'application/json',
       Authorization: 'Bearer ' + accessToken,
+      json: true,
     },
   };
-  const response = await fetch('https://api.spotify.com/v1/me', searchParams);
-  const data = await response.json().items;
-  const { userEmail, display_name } = data;
-  res.locals.userEmail = userEmail;
-  res.locals.username = display_name;
+  try {
+    const response = await fetch('https://api.spotify.com/v1/me', searchParams);
+    const data = await response.json().items;
+    const { userEmail, display_name } = data;
+    res.locals.userEmail = userEmail;
+    res.locals.username = display_name;
+    console.log('leaving getAccount Info');
+    return next();
+  } catch (err) {
+    return next({
+      log: `spotifyController.getAccountInfo ERROR: trouble fetching spoitfy email`,
+      message: {
+        err: `spotifyController.getAccountInfo: ERROR: ${err}`,
+      },
+    });
+  }
 };
 
 module.exports = spotifyController;
