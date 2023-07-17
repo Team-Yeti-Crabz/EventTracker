@@ -62,19 +62,12 @@ export default function Callback() {
       console.log('checkUser', checkUser);
       /* response from back end
           {
-            email: stringify,
             exists: true/false
           }
-          */
+      */
 
-      // // TEST
-      // const checkUser = {
-      //   email: 'bdiso',
-      //   exists: false
-      // }
-
-      // const updatedEmail = setEmail(checkUser.email);
-      console.log('updatedEmail: ', checkUser.email);
+      // // const updatedEmail = setEmail(checkUser.email);
+      // console.log('updatedEmail: ', checkUser.email);
       let redirect = '';
       // TODO: check db for user email
       // if user is not in db
@@ -86,13 +79,7 @@ export default function Callback() {
         redirect = '/home';
       }
       console.log('redirect', redirect);
-      return navigate(redirect, {
-        state: {
-          email: checkUser.email,
-          accessToken: checkUser.accessToken,
-          username: checkUser.username,
-        },
-      });
+      return navigate(redirect);
     } catch (err) {
       return console.log('error in checkUserType');
     }

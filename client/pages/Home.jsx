@@ -4,14 +4,37 @@ import { Link, useLocation } from 'react-router-dom';
 import { Card, CardContent, Typography, Breadcrumbs } from '@mui/material';
 
 export default function HomePage() {
-  const location = useLocation();
-  const { email, username, accessToken } = location.state;
+  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [userData, setUserData] = useState({});
   const [artists, setArtists] = useState([]);
   const [genres, setGenres] = useState([]);
 
   console.log('email: ', email);
   console.log(typeof email);
+  useEffect(() => {
+    const fetchingData = async () => {
+      try {
+        // const {email} = location.state
+        const response = await fetch(`/api/user}`, {
+          method: 'GET',
+          headers: { 'Content-Type': 'application/json' },
+        });
+        const data = await response.json();
+        console.log(data);
+        /*
+          {
+            currentUser: email
+          }
+          */
+        setUsername(data.username);
+        setEmail(data.email);
+      } catch {
+        throw new Error('Error with initial fetch request!');
+      }
+    };
+    fetchingData();
+  }, []);
 
   useEffect(() => {
     const fetchingArtists = async () => {
@@ -41,7 +64,6 @@ export default function HomePage() {
         throw new Error('Error with artist fetch request!', err);
       }
     };
-    //fetchingArtists();
 
     const fetchingGenres = async () => {
       try {
@@ -71,8 +93,9 @@ export default function HomePage() {
         throw new Error('Error with genre fetch request!', err);
       }
     };
-    //fetchingGenres();
-  });
+    fetchingArtists();
+    fetchingGenres();
+  }, [email]);
 
   return (
     <div className="homePage">
@@ -81,23 +104,16 @@ export default function HomePage() {
           <p color="text.primary" className="breadcrumbs">
             HOME PAGE
           </p>
-          <Link
-            underline="hover"
-            color="inherit"
-            to="/preferences"
-            state={{ email, username, accessToken }}
-          >
-            PREFERENCES
-          </Link>
+          <Link to="/preferences">PREFERENCES</Link>
         </Breadcrumbs>
       </div>
-      <div className="home"> Welcome, {username}!</div>
+      <div className="home"> Welcome!</div>
 
       <div className="showBox">
         <h1>Upcoming Shows In Your Area</h1>
         <div className="artistShows">
           <h2>Artist Shows</h2>
-          {artists.forEach((artist) => (
+          {artists.map((artist) => (
             <Card key={artist.artist} className="card">
               <CardContent>
                 <Typography variant="h5" component="h3">
@@ -122,7 +138,7 @@ export default function HomePage() {
 
         <div className="genreShows">
           <h2>Genre Shows</h2>
-          {genres.forEach((genre) => (
+          {genres.map((genre) => (
             <Card key={genre.artist} className="card">
               <CardContent>
                 <Typography variant="h5" component="h3">
