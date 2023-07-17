@@ -19,22 +19,21 @@ app.use(cookieParser());
 app.use(cors());
 
 
-//TODO: require routers
-
+//requiring in routers
 const homeRouter = require('./routes/homeRouter');
 // const preferenceRouter = require('./routes/preferenceRouter');
 const signinRouter = require('./routes/signinRouter');
 const signupRouter = require('./routes/signupRouter');
 const authRouter = require('./routes/authRouter');
 
-//TODO: add router paths
+//establishing router paths
 app.use('/api/home', homeRouter);
 // app.use('/api/preferences', preferenceRouter);
 // app.use('/api/signin', signinRouter);
 app.use('/api/signup', signupRouter);
 app.use('/api/authentication', authRouter);
 
-//serve bundle during production build
+//serve bundle during p roduction build
 if (process.env.NODE_ENV === 'production') {
   // statically serve everything in the build folder on the route '/build'
   app.use('/dist', express.static(path.join(__dirname, '../dist')));
