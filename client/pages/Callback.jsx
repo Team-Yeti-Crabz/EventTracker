@@ -7,9 +7,12 @@ import { useNavigate } from "react-router-dom";
 export default function Callback() {
     //heavy CSS!
 
-    const [confirmed, setConfirm] = useState(false);
-    const [userType, setUserType] = useState('');
     const [email, setEmail] = useState('');
+
+    const navigate = useNavigate(); 
+    // const routeChange = (path) =>{ 
+    //     navigate(path);
+    // }
 
     // get the redirect url path (this includes the code query we will need to send to spotify to retrieve user specific tokens)
     const href = window.location.href;
@@ -28,9 +31,8 @@ export default function Callback() {
           }
         })
       //   const initiateAuth = await response.status;
-        console.log('getTokens fetch response: ', response);
+        console.log('getTokens fetch response: ', response.json());
       if (response.status === 200) {
-          setConfirm(true);
           return checkUserType();
         }
 
@@ -38,73 +40,62 @@ export default function Callback() {
         return console.log('error making fetch request to server to retrieve spotify tokens: ', err);
       }
     }
-
     
 
     // TODO: get user email from spotify and check db to see if user exists
     const checkUserType = async () => {
-        //TODO: get request to spotify to get user email
         console.log('entered Callback.jsx checkUserType');
+        //TODO: get request to spotify to get user email and server will check db for existing user
         try {
-          const response = await fetch('api/authentication/email', {
-            method: 'GET',
-            headers: {
-              'Content-Type': 'Application/JSON'
-            }
-          })
-          const checkUser = response.json();
-
+          // TODO: uncomment fetch
+          // const response = await fetch('api/authentication/email', {
+          //   method: 'GET',
+          //   headers: {
+          //     'Content-Type': 'Application/JSON'
+          //   }
+          // })
+          // const checkUser = response.json();
           /* response from back end
           {
             email: stringify,
             exists: true/false
           }
           */
+
+          // TEST
+          const checkUser = {
+            email: haliahaynes,
+            exists: true
+          }
           
-          // setEmail(checkUser.email);
+          setEmail(checkUser.email);
+          let redirect = '';
           // TODO: check db for user email
           // if user is not in db
-        //   if(checkUser.exists === false)
-          // setUserType('new');
-  
+          if(checkUser.exists === false) {
+            redirect = '/signup';
+          }
           // if user already exists in db
-        //   else if(checkUser.exists === false)
-          // setUserType('old')
+          else if(checkUser.exists === true) {
+            redirect = '/home';
+          }
+
+          return navigate(redirect, {
+            email: email
+          })
           
         } catch (err) {
-
+          return console.log('error in checkUserType');
         }
-
-
-        return;
     }
     
     
-
-
-
-  const navigate = useNavigate(); 
-  const routeChange = (path) =>{ 
-      navigate(path);
-  }
-
-
-//   useEffect(() => {
-//     let path = '';
-//     if (confirmed === true && userType === 'new') {
-//         path = '/signup';
-//     }
-//     else if (confirmed === true && userType === 'old') {
-//         path = '/home';
-//     }
-//     return routeChange(path);
-
-//   }, [userType]);
-
   getTokens();
+  // checkUserType();
+
 
   return (
-    <div >
+    <div className='callback'>
         <h2>Confirming Spotify authentication...</h2>
         <p>Please wait</p>
     </div>

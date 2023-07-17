@@ -5,8 +5,7 @@ import { Card, CardContent, Typography, Breadcrumbs } from '@mui/material';
 
 export default function HomePage() {
   const location = useLocation();
-  // const { email } = location.state;
-  const email = 'haliahaynes';
+  const { email } = location.state;
   const [userData, setUserData] = useState({});
   const [artists, setArtists] = useState([]);
   const [genres, setGenres] = useState([]);

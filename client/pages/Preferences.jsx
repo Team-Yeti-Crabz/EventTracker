@@ -5,8 +5,8 @@ import { Card, CardContent, Typography, Breadcrumbs } from '@mui/material';
 
 export default function Preference() {
   const location = useLocation();
-  // const { email } = location.state;
-  const email = 'haliahaynes';
+  const { email } = location.state;
+  // const email = 'haliahaynes';
   const [userData, setUserData] = useState({});
   const [newArtist, setNewArtist] = useState('');
   const [currArtists, setCurrArtists] = useState([]);
@@ -16,7 +16,6 @@ export default function Preference() {
   useEffect(() => {
     const fetchingData = async () => {
       try {
-        const email = 'haliahaynes';
         // const {email} = location.state
         const response = await fetch(
           `/api/preferences?email=${encodeURIComponent(email)}`,

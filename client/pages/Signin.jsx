@@ -68,7 +68,7 @@ const handleSignIn = async () => {
 
   return (
     <div className="signinPage">
-      <div className="signin"> Made it to sign in!</div>
+      <div className="signin"> Welcome to EventTracker</div>
       <button type="button" onClick={handleRedirect}>
         Sign In
       </button>

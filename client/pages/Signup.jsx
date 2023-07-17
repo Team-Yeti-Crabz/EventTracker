@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import '../styles.css';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 
 export default function Signup() {
-  const [email, setUserEmail] = useState('');
+  const location = useLocation();
+  const {email} = location.state;
   const [city, setUserCity] = useState('');
   const [state, setUserState] = useState('');
   const navigate = useNavigate();
@@ -14,14 +15,12 @@ export default function Signup() {
   const handleNewUser = async (e) => {
     e.preventDefault();
     try {
-      const userEmail = e.target.elements.email.value;
-      setUserEmail(userEmail);
       const userCity = e.target.elements.city.value;
       setUserCity(userCity);
       const userState = e.target.elements.state.value;
       setUserState(userState);
       const signupReq = {
-        email: userEmail,
+        email: email,
         city: userCity,
         state: userState,
         //add tokens
@@ -43,14 +42,10 @@ export default function Signup() {
   return (
     <div className="signupPage">
       <div className="signup">
-        <h1>It looks like you're new to Event Tracker. Welcome!</h1>
+        <h1>It looks like you're new to EventTracker. Welcome, {email}!</h1>
         {/* send a post request to the database with the location */}
         {/* make sure to pass in email from OAuth as well! */}
         <form onSubmit={handleNewUser} autoComplete="off" id="signupinfo">
-          <h4>add your email:</h4>
-          <input name="email" type="text" placeholder="email" required></input>
-          <br></br>
-          <br></br>
           <h4>add your location:</h4>
           <input
             name="city"
