@@ -63,10 +63,34 @@ userController.createUser = async (req, res, next) => {
 
 
 userController.updateUser = async (req, res, next) => {
-  
-  // to grab the email of patch request
-  //api/preference
-  // email = req.query.email
+  const email = req.query.email;
+  const {artists, genres} = req.body;
+
+  if (!artists && !genres)
+    return next({
+      log: `userController.updateUser ERROR: missing artist or genre on req body`,
+      message: {
+        err: 'userController.updateUser: ERROR: missing artist or genre on req body',
+      },
+  });
+
+  try {
+    if(artists){
+      Users.findOneAndUpdate({email: email}, {artists: artists});
+    };
+    if(genres){
+      Users.findOneAndUpdate({email: email}, {genres: genres});
+    };
+    return next();
+  }
+  catch(err){
+    return next({
+      log: `userController.createUser ERROR: trouble creating new user`,
+      message: {
+        err: `userController.createUser ERROR: ${err}`,
+      },
+    })
+  }
 }
 
 
