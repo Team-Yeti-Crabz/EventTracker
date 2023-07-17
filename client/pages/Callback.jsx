@@ -30,10 +30,8 @@ export default function Callback() {
       //   const initiateAuth = await response.status;
         console.log('getTokens fetch response: ', response);
       if (response.status === 200) {
-        
-        // TODO: UNCOMMENT BELOW LINES
-        //   setConfirm(true);
-        //   return checkUserType();
+          setConfirm(true);
+          return checkUserType();
         }
 
       }  catch (err) {
@@ -46,15 +44,37 @@ export default function Callback() {
     // TODO: get user email from spotify and check db to see if user exists
     const checkUserType = async () => {
         //TODO: get request to spotify to get user email
-        // setEmail(response);
-
-        // TODO: check db for user email
-        // if user is not in db
-        // setUserType('new');
-
-        // if user already exists in db
-        // setUserType('old')
         console.log('entered Callback.jsx checkUserType');
+        try {
+          const response = await fetch('api/authentication/email', {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'Application/JSON'
+            }
+          })
+          const checkUser = response.json();
+
+          /* response from back end
+          {
+            email: stringify,
+            exists: true/false
+          }
+          */
+          
+          // setEmail(checkUser.email);
+          // TODO: check db for user email
+          // if user is not in db
+        //   if(checkUser.exists === false)
+          // setUserType('new');
+  
+          // if user already exists in db
+        //   else if(checkUser.exists === false)
+          // setUserType('old')
+          
+        } catch (err) {
+
+        }
+
 
         return;
     }

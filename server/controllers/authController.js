@@ -40,6 +40,7 @@ authController.initializeAuth = (req, res, next) =>
       const state = generateRandomString(16);
       // store state on a cookie for spotify oauth communication with server
       res.cookie(stateKey, state);
+      console.log('cookie stateKey: ', state);
     
       // object sent as res.query to spotify so your application can request authorization
       const scope = 'user-read-private user-read-email';
@@ -69,6 +70,7 @@ authController.checkState = (req, res, next) => {
   try {
 
     const state = req.query.state || null;
+    console.log('state returned from spotify: ', state);
   
     if (state === null || state !== storedState) {
       // user choose not to redirect to spotify or there was an error
@@ -104,7 +106,6 @@ authController.checkState = (req, res, next) => {
 // request access tokens from spotify
 authController.getTokens = (req, res, next) => {
     const code = req.query.code || null;
-    // ! WHY IS THIS NOT LOGGING
     console.log('CODE: ', code);
     // clear statekey that was stored on cookie as it's no longer needed. Will be using access and refresh token to communicate with spotify api
     res.clearCookie(stateKey);
@@ -135,6 +136,9 @@ authController.getTokens = (req, res, next) => {
           headers: { 'Authorization': 'Bearer ' + res.locals.refreshToken },
           json: true
         };
+
+        // TODO: STORE ACCESS TOKENS IN DATABASE
+
         return next();
 
         // ! spotify example
