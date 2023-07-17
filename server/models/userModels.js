@@ -24,8 +24,9 @@ const userSchema = new Schema({
     city: String,
     state: String,
   },
-  artists: Array,
-  genres: Array
+  artists: [String],
+  genres: [String],
+  accessToken: String
 });
 
 // creats a model for the 'species' collection that will be part of the export

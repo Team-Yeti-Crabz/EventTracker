@@ -11,8 +11,6 @@ seatGeekController.getArtistEvents = async (req, res, next) => {
     const eventsArray = [];
     const artists = res.locals.userInfo.artists;
     const city = res.locals.userInfo.location.city;
-    // const artists = ['clutch', 'drake'];
-    // const city = 'Denver';
 
     //generating constants for todays date and date three months from now in API format
     const date = new Date();
@@ -30,6 +28,7 @@ seatGeekController.getArtistEvents = async (req, res, next) => {
         `https://api.seatgeek.com/2/events/?client_id=${seatgeek.client_id}&client_secret=${seatgeek.client_secret}&performers.slug=${artists[i]}&venue.city=${city}&datetime_utc.gte=${today}&datetime_utc.lte=${threeMonths}`
       );
       const { events } = await response.json();
+      console.log(events);
       //making a separate object for each event returned back for an artist
       events.forEach((el) => {
         const event = {
