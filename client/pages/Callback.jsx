@@ -6,10 +6,9 @@ import { useNavigate } from 'react-router-dom';
 // if the user's credentials were authenticated, make get request to obtain refresh and access tokens from spotify
 export default function Callback() {
   //heavy CSS!
-
+  
   const [email, setEmail] = useState('');
   const [fetched, setFetched] = useState(false);
-
   const navigate = useNavigate();
   // const routeChange = (path) =>{
   //     navigate(path);

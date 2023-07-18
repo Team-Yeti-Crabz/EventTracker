@@ -42,6 +42,7 @@ spotifyController.getTopArtists = async (req, res, next) => {
 };
 
 spotifyController.getAccountInfo = async (req, res, next) => {
+
   try {
     const accessToken = req.body.accessToken;
 
