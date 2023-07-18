@@ -1,36 +1,50 @@
 const spotifyController = {};
+const { Users, CurrentUsers } = require('../models/userModels.js');
 const request = require('request'); // "Request" library
 
 //get request to SeatGeek based on user preferences
 spotifyController.getTopArtists = async (req, res, next) => {
-  const accessToken = res.locals.accessToken;
-
-  const searchParams = {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: 'Bearer ' + accessToken,
-    },
-  };
-  const response = await fetch(
-    'https://api.spotify.com/v1/me/top/artists?time_range=medium_term&limit=10&offset=0',
-    searchParams
-  );
-  const data = await response.json().items;
-  const artistArray = [];
-  data.forEach((el) => {
-    artistArray.push(el.name);
-  });
-  res.locals.spotifyArtists = artistArray;
+  try {
+    const email = req.query.email;
+    const accessToken = res.locals.accessToken;
+    const searchParams = {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + accessToken,
+      },
+    };
+    const response = await fetch(
+      'https://api.spotify.com/v1/me/top/artists?time_range=medium_term&limit=5&offset=0',
+      searchParams
+    );
+    const data = await response.json();
+    const artistArray = [];
+    if (res.locals.userInfo.artists.length === 0) {
+      data.items.forEach((artist) => {
+        artistArray.push(artist.name.toLowerCase().replace(' ', '-'));
+      });
+      const updatedArtists = await Users.findOneAndUpdate(
+        { email: email },
+        { artists: artistArray }
+      );
+    }
+    res.locals.userInfo.artists = updatedArtists.artists;
+    return next();
+  } catch (err) {
+    return next({
+      log: `spotifyController.getTopArtists ERROR: trouble fetching top artists`,
+      message: {
+        err: `spotifyController.getTopArtists: ERROR: ${err}`,
+      },
+    });
+  }
 };
 
 spotifyController.getAccountInfo = async (req, res, next) => {
 
   try {
-    console.log('entered getAccountInfo');
-    console.log('body', req.body);
     const accessToken = req.body.accessToken;
-    console.log('accessToken', accessToken);
 
     const searchParams = {
       method: 'GET',
@@ -41,12 +55,9 @@ spotifyController.getAccountInfo = async (req, res, next) => {
     };
     const response = await fetch('https://api.spotify.com/v1/me', searchParams);
     const data = await response.json();
-    console.log('data', data);
     const { email, display_name } = data;
-    console.log('email', email, 'dispaly name', display_name);
     res.locals.email = email;
     res.locals.username = display_name;
-    console.log('leaving getAccountInfo');
     return next();
   } catch (err) {
     return next({

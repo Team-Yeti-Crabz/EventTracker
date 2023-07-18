@@ -1,10 +1,14 @@
-const { Users } = require('../models/userModels.js');
+const { resolvePath } = require('react-router');
+const { Users, CurrentUsers } = require('../models/userModels.js');
 
 const userController = {};
 
 //fetching user document from 'Users' collection in database
 userController.getUserInfo = async (req, res, next) => {
-  const email = req.query.email;
+  let email;
+  if (req.query.email) email = req.query.email;
+  if (!email) email = res.locals.email;
+  let exists = false;
   if (!email)
     return next({
       log: `userController.getUserInfo ERROR: email missing from req body`,
@@ -26,7 +30,9 @@ userController.getUserInfo = async (req, res, next) => {
     genres: [Genre1, Genre2, Genre3]
     }
     */
-
+    res.locals.accessToken = userInfo.accessToken;
+    if (userInfo) exists = true;
+    res.locals.exists = exists;
     return next();
   } catch {
     return next({
@@ -39,31 +45,36 @@ userController.getUserInfo = async (req, res, next) => {
 };
 
 userController.createUser = async (req, res, next) => {
-  const { email, city, state, accessToken, username } = req.body;
-  if (!email || !city || !state || !username || !accessToken)
-    return next({
-      log: `userController.createUser ERROR: missing email or location on req body`,
-      message: {
-        err: 'userController.createUser: ERROR: missing email or location on req body',
-      },
-    });
-  try {
-    const newUser = await Users.create({
-      email,
-      accessToken,
-      username,
-      location: { city, state },
-    });
-    res.locals.newUser = newUser;
-    return next();
-  } catch (err) {
-    return next({
-      log: `userController.createUser ERROR: trouble creating new user`,
-      message: {
-        err: `userController.createUser ERROR: ${err}`,
-      },
-    });
+  const email = res.locals.email;
+  const username = res.locals.username;
+  const accessToken = req.body.accessToken;
+  const exists = res.locals.exists;
+  if (!exists) {
+    if (!email || !username || !accessToken)
+      return next({
+        log: `userController.createUser ERROR: missing email or location on req body`,
+        message: {
+          err: 'userController.createUser: ERROR: missing email or location on req body',
+        },
+      });
+    try {
+      const newUser = await Users.create({
+        email,
+        accessToken,
+        username,
+      });
+      res.locals.newUser = newUser;
+      return next();
+    } catch (err) {
+      return next({
+        log: `userController.createUser ERROR: trouble creating new user`,
+        message: {
+          err: `userController.createUser ERROR: ${err}`,
+        },
+      });
+    }
   }
+  return next();
 };
 
 userController.updateUser = async (req, res, next) => {
@@ -173,4 +184,38 @@ userController.addToken = async (req, res, next) => {
     });
   }
 };
+
+userController.getCurrentUser = async (req, res, next) => {
+  try {
+    const currentUser = await CurrentUser.findOne({});
+    res.locals.currentUser = currentUser;
+    return next();
+  } catch {
+    return next({
+      log: `userController.getUserInfo ERROR: trouble getting user data from database`,
+      message: {
+        err: 'userController.getUserInfo: ERROR: trouble getting user data from database',
+      },
+    });
+  }
+};
+
+userController.setUser = async (req, res, next) => {
+  try {
+    const currentUser = await CurrentUser.findOneAndUpdate(
+      {},
+      { email: res.locals.email, username: res.locals.username }
+    );
+    res.locals.currentUser = currentUser;
+    return next();
+  } catch {
+    return next({
+      log: `userController.getUserInfo ERROR: trouble setting user`,
+      message: {
+        err: 'userController.getUserInfo: ERROR: trouble setting user',
+      },
+    });
+  }
+};
+
 module.exports = userController;
