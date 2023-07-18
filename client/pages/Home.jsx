@@ -5,11 +5,13 @@ import { Card, CardContent, Typography, Breadcrumbs } from '@mui/material';
 
 export default function HomePage() {
   const location = useLocation();
-  // const { email } = location.state;
-  const email = 'haliahaynes';
+  const { email, username, accessToken } = location.state;
   const [userData, setUserData] = useState({});
   const [artists, setArtists] = useState([]);
   const [genres, setGenres] = useState([]);
+
+  console.log('email: ', email);
+  console.log(typeof email);
 
   useEffect(() => {
     const fetchingArtists = async () => {
@@ -82,13 +84,14 @@ export default function HomePage() {
           <Link
             underline="hover"
             color="inherit"
-            to={{ pathname: '/preferences', state: { email: email } }}
+            to="/preferences"
+            state={{ email, username, accessToken }}
           >
             PREFERENCES
           </Link>
         </Breadcrumbs>
       </div>
-      <div className="home"> Welcome, {email}!</div>
+      <div className="home"> Welcome, {username}!</div>
 
       <div className="showBox">
         <h1>Upcoming Shows In Your Area</h1>

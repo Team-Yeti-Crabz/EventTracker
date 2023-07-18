@@ -9,8 +9,10 @@ const seatGeekController = {};
 seatGeekController.getArtistEvents = async (req, res, next) => {
   try {
     const eventsArray = [];
-    const artists = res.locals.userInfo.artists;
-    const city = res.locals.userInfo.location.city;
+    // const artists = res.locals.userInfo.artists;
+    // const city = res.locals.userInfo.location.city;
+    const artists = ['ice-spice', 'all-them-witches', 'clutch'];
+    const city = 'Denver';
 
     //generating constants for todays date and date three months from now in API format
     const date = new Date();
@@ -24,8 +26,9 @@ seatGeekController.getArtistEvents = async (req, res, next) => {
       /*fetch to seatgeek API 
       query based on City, Artist, and date range of 3 Months
       */
+      const artistString = artists[i].toLowerCase().replaceAll(' ', '-');
       const response = await fetch(
-        `https://api.seatgeek.com/2/events/?client_id=${seatgeek.client_id}&client_secret=${seatgeek.client_secret}&performers.slug=${artists[i]}&venue.city=${city}&datetime_utc.gte=${today}&datetime_utc.lte=${threeMonths}`
+        `https://api.seatgeek.com/2/events/?client_id=${seatgeek.client_id}&client_secret=${seatgeek.client_secret}&performers.slug=${artistString}&venue.city=${city}&datetime_utc.gte=${today}&datetime_utc.lte=${threeMonths}`
       );
       const { events } = await response.json();
       console.log(events);
@@ -59,10 +62,10 @@ seatGeekController.getArtistEvents = async (req, res, next) => {
 seatGeekController.getGenreEvents = async (req, res, next) => {
   try {
     const eventsArray = [];
-    const genre = req.query.genre;
-    const city = res.locals.userInfo.location.city;
-    // const genre = 'rock';
-    // const city = 'Denver';
+    // const genre = req.query.genre;
+    // const city = res.locals.userInfo.location.city;
+    const genre = 'rock';
+    const city = 'Denver';
 
     //generating constants for todays date and date three months from now in API format
     const date = new Date();

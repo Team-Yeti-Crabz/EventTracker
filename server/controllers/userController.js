@@ -39,8 +39,8 @@ userController.getUserInfo = async (req, res, next) => {
 };
 
 userController.createUser = async (req, res, next) => {
-  const { email, city, state } = req.body;
-  if (!email || !city || !state)
+  const { email, city, state, accessToken, username } = req.body;
+  if (!email || !city || !state || !username || !accessToken)
     return next({
       log: `userController.createUser ERROR: missing email or location on req body`,
       message: {
@@ -48,7 +48,12 @@ userController.createUser = async (req, res, next) => {
       },
     });
   try {
-    const newUser = await Users.create({ email, location: { city, state } });
+    const newUser = await Users.create({
+      email,
+      accessToken,
+      username,
+      location: { city, state },
+    });
     res.locals.newUser = newUser;
     return next();
   } catch (err) {
@@ -63,23 +68,30 @@ userController.createUser = async (req, res, next) => {
 
 userController.updateUser = async (req, res, next) => {
   const email = req.query.email;
-  const { artists, genres } = req.body;
+  const { artists, genres, location } = req.body;
   console.log(artists);
   console.log(genres);
-  // console.log(req.body);
-  if (!artists && !genres)
+
+  if (!artists && !genres && !location)
     return next({
-      log: `userController.updateUser ERROR: missing artist or genre on req body`,
+      log: `userController.updateUser ERROR: missing artist/genre/location on req body`,
       message: {
-        err: 'userController.updateUser: ERROR: missing artist or genre on req body',
+        err: 'userController.updateUser: ERROR: missing artist/genre/location on req body',
       },
     });
 
   try {
+    if (location) {
+      const updatedUser = await Users.findOneAndUpdate(
+        { email: email },
+        { $set: { location: location } },
+        { new: true }
+      );
+    }
     if (artists) {
       const updatedUser = await Users.findOneAndUpdate(
         { email: email },
-        { $push: { artists: artists} },
+        { $push: { artists: artists } },
         { new: true }
       );
       res.locals.updatedUser = updatedUser;
@@ -134,7 +146,31 @@ userController.updateUserSpotify = async (req, res, next) => {
   }
 };
 
-
 //add middleware to send access token to database
-
+userController.addToken = async (req, res, next) => {
+  console.log('entering addToken');
+  const accessToken = req.body.accessToken;
+  const email = res.locals.userEmail;
+  const username = res.locals.username;
+  const exists = false;
+  try {
+    const userDoc = await Users.findOneAndUpdate(
+      { email: email },
+      { accessToken, username },
+      { new: true }
+    );
+    if (userDoc) exists = true;
+    res.locals.exists = exists;
+    console.log('res.locals.exists', res.locals.exists);
+    console.log('leaving addToken');
+    return next();
+  } catch (err) {
+    return next({
+      log: `userController.updateUserSpotify ERROR: trouble updating spotify token to database`,
+      message: {
+        err: `userController.updateUserSpotify ERROR: ${err}`,
+      },
+    });
+  }
+};
 module.exports = userController;
