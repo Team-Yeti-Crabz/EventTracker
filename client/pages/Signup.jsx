@@ -44,7 +44,7 @@ export default function Signup() {
   return (
     <div className="signupPage">
       <div className="signup">
-        <h1>It looks like you're new to EventTracker. Welcome, {username}!</h1>
+        <h1>It looks like you're new to EventTracker. Welcome!</h1>
         {/* send a post request to the database with the location */}
         {/* make sure to pass in email from OAuth as well! */}
         <form onSubmit={handleNewUser} autoComplete="off" id="signupinfo">
