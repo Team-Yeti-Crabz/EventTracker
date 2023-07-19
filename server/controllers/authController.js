@@ -36,6 +36,7 @@ const authController = {};
 // initialize state to request user authentication from Spotify 
 authController.initializeAuth = (req, res, next) => 
 {
+  console.log('inside authController.initializeAuth')
   try {
       const state = generateRandomString(16);
       // store state on a cookie for spotify oauth communication with server
@@ -52,6 +53,7 @@ authController.initializeAuth = (req, res, next) =>
         state: state
       })  
       console.log('initialize auth url complete');
+      console.log('leaving authController.initializeAuth')
       return next();
   } catch (err) {
     return next({
@@ -65,7 +67,8 @@ authController.initializeAuth = (req, res, next) =>
 // check spotify's response for state parameter
 authController.checkState = (req, res, next) => {
     // the state parameter will tell us if the user was authenticated by spotify, if they did not choose to redirect to spotify, or if there was an error
-  const storedState = req.cookies ? req.cookies[stateKey] : null
+  console.log('inside authController.checkState')
+    const storedState = req.cookies ? req.cookies[stateKey] : null
 
   try {
 
@@ -90,6 +93,7 @@ authController.checkState = (req, res, next) => {
   
     } else {
       // spotify authenticated user credentials
+      console.log('leaving authController.checkState')
       return next();
     }
   } catch (err) {
@@ -105,6 +109,7 @@ authController.checkState = (req, res, next) => {
 // need to update the structure of this middleware and add the post request to router, but just checking if functional for now based off spotify examples
 // request access tokens from spotify
 authController.getTokens = (req, res, next) => {
+    console.log('inside authController.getTokens')
     const code = req.query.code || null;
     console.log('CODE: ', code);
     // clear statekey that was stored on cookie as it's no longer needed. Will be using access and refresh token to communicate with spotify api
@@ -139,6 +144,7 @@ authController.getTokens = (req, res, next) => {
 
         // TODO: STORE ACCESS TOKENS IN DATABASE
 
+        console.log('leaving authController.getTokens')
         return next();
 
         // ! spotify example

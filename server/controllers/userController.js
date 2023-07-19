@@ -4,6 +4,7 @@ const userController = {};
 
 //fetching user document from 'Users' collection in database
 userController.getUserInfo = async (req, res, next) => {
+  console.log('inside userController.getUserInfo')
   const email = req.query.email;
   if (!email)
     return next({
@@ -26,7 +27,7 @@ userController.getUserInfo = async (req, res, next) => {
     genres: [Genre1, Genre2, Genre3]
     }
     */
-
+    console.log('leaving userController.getUserInfo')
     return next();
   } catch {
     return next({
@@ -39,6 +40,7 @@ userController.getUserInfo = async (req, res, next) => {
 };
 
 userController.createUser = async (req, res, next) => {
+  console.log('inside  userController.createUser')
   const { email, city, state, accessToken, username } = req.body;
   if (!email || !city || !state || !username || !accessToken)
     return next({
@@ -55,6 +57,7 @@ userController.createUser = async (req, res, next) => {
       location: { city, state },
     });
     res.locals.newUser = newUser;
+    console.log('leaving userController.createUser')
     return next();
   } catch (err) {
     return next({
@@ -67,6 +70,8 @@ userController.createUser = async (req, res, next) => {
 };
 
 userController.updateUser = async (req, res, next) => {
+  console.log('inside  userController.updateUser')
+
   const email = req.query.email;
   const { artists, genres, location } = req.body;
   console.log(artists);
@@ -105,7 +110,7 @@ userController.updateUser = async (req, res, next) => {
       res.locals.updatedUser = updatedUser;
     }
     console.log(res.locals.updatedUser);
-
+    console.log('leaving  userController.updateUser')
     return next();
   } catch (err) {
     return next({
@@ -118,6 +123,7 @@ userController.updateUser = async (req, res, next) => {
 };
 //initially updates users prefered artists
 userController.updateUserSpotify = async (req, res, next) => {
+  console.log('inside  userController.updateUserSpotify')
   const email = res.locals.email;
   const artists = res.locals.spotifyArtists;
   if (!artists || !email)
@@ -135,6 +141,7 @@ userController.updateUserSpotify = async (req, res, next) => {
       { new: true }
     );
     res.locals.updatedUserSpotify = updatedUserSpotify;
+    console.log('leaving userController.updateUserSpotify')
     return next();
   } catch (err) {
     return next({
