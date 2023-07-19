@@ -99,10 +99,11 @@ export default function Callback() {
 
   if (fetched === false) {
     setFetched(true);
-  }
-  useEffect(() => {
     getTokens();
-  }, [fetched]);
+  }
+  // useEffect(() => {
+  //   getTokens();
+  // }, [fetched]);
 
   return (
     <div className="signinPage">

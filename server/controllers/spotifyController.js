@@ -3,6 +3,7 @@ const request = require('request'); // "Request" library
 
 //get request to SeatGeek based on user preferences
 spotifyController.getTopArtists = async (req, res, next) => {
+  console.log('inside spotifyController.getTopArtists')
   const accessToken = res.locals.accessToken;
 
   const searchParams = {
@@ -25,6 +26,7 @@ spotifyController.getTopArtists = async (req, res, next) => {
 };
 
 spotifyController.getAccountInfo = async (req, res, next) => {
+  console.log('inside spotifyController.getAccountInfo')
 
   try {
     console.log('entered getAccountInfo');

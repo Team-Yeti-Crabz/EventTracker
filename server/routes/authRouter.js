@@ -21,8 +21,8 @@ router.get(
   authController.checkState,
   authController.getTokens,
   (req, res) => {
-    console.log('acces token: ', res.locals.accessToken);
-    console.log('refresh token: ', res.locals.refreshToken);
+    console.log('router acces token: ', res.locals.accessToken);
+    console.log('router refresh token: ', res.locals.refreshToken);
     console.log(
       'options to pass into spotify api requests: ',
       res.locals.options

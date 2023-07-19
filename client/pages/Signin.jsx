@@ -32,11 +32,12 @@ export default function Signin() {
 
   if (fetched === false) {
     setFetched(true);
+    redirectUrl();
   }
 
-  useEffect(() => {
-    redirectUrl();
-  }, [fetched]);
+  // useEffect(() => {
+  //   redirectUrl();
+  // }, [fetched]);
 
   // let navigate = useNavigate();
   // const routeChange = () =>{
