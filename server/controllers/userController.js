@@ -104,7 +104,7 @@ userController.updateUser = async (req, res, next) => {
     if (genres) {
       const updatedUser = await Users.findOneAndUpdate(
         { email: email },
-        { genres: genres },
+        { $push: { genres: genres } },
         { new: true }
       );
       res.locals.updatedUser = updatedUser;
