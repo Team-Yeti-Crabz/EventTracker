@@ -1,23 +1,27 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import '../styles.css';
 import { Link, useLocation } from 'react-router-dom';
 import { Card, CardContent, Typography, Breadcrumbs } from '@mui/material';
+import { ValuesContext } from '../pages/Contexts';
+
 
 export default function HomePage() {
   const location = useLocation();
-  const { email, username, accessToken } = location.state;
+  const { globalValues } = useContext(ValuesContext);
+  const { email, username, access_token } = globalValues;
   const [userData, setUserData] = useState({});
   const [artists, setArtists] = useState([]);
   const [genres, setGenres] = useState([]);
 
-  console.log('email: ', email);
-  console.log(typeof email);
-
+  // console.log('email: ', email);
+  // console.log(typeof email);
+  //`/api/home/artist?email=${encodeURIComponent(email)}`
   useEffect(() => {
+    console.log('Global Values: ', globalValues)
     const fetchingArtists = async () => {
       try {
         const response = await fetch(
-          `/api/home/artist?email=${encodeURIComponent(email)}`,
+          `/api/home/artist?email=${email}`,
           {
             method: 'GET',
             headers: { 'Content-Type': 'application/json' },
@@ -36,17 +40,20 @@ export default function HomePage() {
         // imgUrl:
         // },{},{}]
         // }
-        setArtists(artists.artistShows);
+        console.log('artists: ', artists)
+        // setArtists(artists.artistShows);
+        setArtists(artists)
+
       } catch (err) {
         throw new Error('Error with artist fetch request!', err);
       }
     };
-    //fetchingArtists();
+    fetchingArtists();
 
     const fetchingGenres = async () => {
       try {
         const response = await fetch(
-          `/api/home/genre?email=${encodeURIComponent(email)}`,
+          `/api/home/genre?email=${email}`,
           {
             method: 'GET',
             headers: { 'Content-Type': 'application/json' },
@@ -72,7 +79,7 @@ export default function HomePage() {
       }
     };
     //fetchingGenres();
-  });
+  }, []);
 
   return (
     <div className="homePage">
@@ -85,19 +92,19 @@ export default function HomePage() {
             underline="hover"
             color="inherit"
             to="/preferences"
-            state={{ email, username, accessToken }}
+            state={{ email, username, access_token }}
           >
             PREFERENCES
           </Link>
         </Breadcrumbs>
       </div>
-      <div className="home"> Welcome, {username}!</div>
+      <div className="home"> {`Welcome, ${username}!`}</div>
 
       <div className="showBox">
         <h1>Upcoming Shows In Your Area</h1>
         <div className="artistShows">
-          <h2>Artist Shows</h2>
-          {artists.forEach((artist) => (
+          <h2>{`Artist Shows ${artists.artist}`}</h2>
+          {artists? artists.forEach((artist) => (
             <Card key={artist.artist} className="card">
               <CardContent>
                 <Typography variant="h5" component="h3">
@@ -117,12 +124,12 @@ export default function HomePage() {
                 </Typography>
               </CardContent>
             </Card>
-          ))}
+          )): 'No artists'}
         </div>
 
         <div className="genreShows">
           <h2>Genre Shows</h2>
-          {genres.forEach((genre) => (
+          {genres ? genres.forEach((genre) => (
             <Card key={genre.artist} className="card">
               <CardContent>
                 <Typography variant="h5" component="h3">
@@ -142,7 +149,7 @@ export default function HomePage() {
                 </Typography>
               </CardContent>
             </Card>
-          ))}
+          )): 'No Genres'}
         </div>
       </div>
     </div>

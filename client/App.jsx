@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
-import { FetchContext } from './pages/Contexts';
+import { ValuesContext } from './pages/Contexts';
 
 
 import styles from './styles.css';
@@ -13,11 +13,11 @@ import Callback from './pages/Callback.jsx';
 
 //create app HTML structure
 const App = () => {
-  const [globalFetch, setGlobalFetch] = useState(false);
+  const [globalValues, setGlobalValues] = useState({access_token:'', email:'', username: ''});
 
   return (
     <div className="App">
-      <FetchContext.Provider value={{ globalFetch, setGlobalFetch }}>
+      <ValuesContext.Provider value={{ globalValues, setGlobalValues }}>
         <Routes>
           {/* Add each page as a route */}
           <Route path="/" element={<Signin />} />
@@ -26,7 +26,7 @@ const App = () => {
           <Route path="/home" element={<Home />} />
           <Route path="/preferences" element={<Preferences />} />
         </Routes>
-      </FetchContext.Provider>
+      </ValuesContext.Provider>
     </div>
   );
 };

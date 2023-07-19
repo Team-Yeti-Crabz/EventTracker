@@ -1,6 +1,5 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState } from 'react';
 import '../styles.css';
-import { FetchContext } from '../pages/Contexts';
 
 
 // TODO: this comment belongs on '/callback' page
@@ -10,7 +9,6 @@ export default function Signin() {
   // const [state, setState] = useState('');
   const [url, setUrl] = useState('');
   const [fetched, setFetched] = useState(false);
-  const { globalFetch, setGlobalFetch } = useContext(FetchContext);
 
 
   // fetch request to server to set random state and store on cookie and generate correct url for client to go to via Sign In button
