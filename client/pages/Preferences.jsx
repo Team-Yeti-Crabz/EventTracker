@@ -135,6 +135,11 @@ export default function Preference() {
     }
   };
 
+  console.log('currArtists: ', currArtists)
+  // setCurrArtists([])
+  console.log('currGenres: ', currGenres)
+  // setCurrGenres([])
+
   return (
     <div className="preferencesPage">
       <div className="breadcrumb">
