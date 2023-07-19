@@ -57,7 +57,8 @@ module.exports = {
   devServer: {
     host: 'localhost',
     port: 8080,
-    hot: true,
+    hot: false,
+    liveReload: false,
     historyApiFallback: true,
     static: {
       // what the public sees so they dont know the path

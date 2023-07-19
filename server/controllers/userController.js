@@ -156,10 +156,11 @@ userController.updateUserSpotify = async (req, res, next) => {
 //add middleware to send access token to database
 userController.addToken = async (req, res, next) => {
   console.log('entering addToken');
+  console.log('LOOK HERE: ', res.locals)
   const accessToken = req.body.accessToken;
   const email = res.locals.userEmail;
   const username = res.locals.username;
-  const exists = false;
+  let exists = false;
   try {
     const userDoc = await Users.findOneAndUpdate(
       { email: email },

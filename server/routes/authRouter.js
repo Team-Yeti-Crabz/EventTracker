@@ -21,6 +21,7 @@ router.get(
   authController.checkState,
   authController.getTokens,
   (req, res) => {
+    console.log('leaving auth router GET /callback')
     console.log('acces token: ', res.locals.accessToken);
     console.log('refresh token: ', res.locals.refreshToken);
     console.log(

@@ -129,12 +129,14 @@ authController.getTokens = (req, res, next) => {
 
     // request refresh and access tokens from spotify
     request.post(authOptions, function(error, response, body) {
+      console.log('inside busted request post')
       if (!error && response.statusCode === 200) {
         console.log('body: ', body);
         // Object.values(body)[0]
         // Object.values(body)[3]
         res.locals.accessToken = body.access_token;
         res.locals.refreshToken = body.refresh_token;
+        console.log('ARE TOKENS VALID: ', res.locals.accessToken, res.locals.refreshToken)
 
         res.locals.options = {
           url: 'https://api.spotify.com/v1/me',
