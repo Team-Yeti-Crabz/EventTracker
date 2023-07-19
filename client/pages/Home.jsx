@@ -10,7 +10,8 @@ import { Card, CardContent, Typography, Breadcrumbs } from '@mui/material';
 
 export default function HomePage() {
   const location = useLocation();
-  const { email, username, accessToken } = location.state;
+  const { globalValues } = useContext(ValuesContext);
+  const { email, username, access_token } = globalValues;
   const [userData, setUserData] = useState({});
   const [artists, setArtists] = useState(['ye']);
   const [genres, setGenres] = useState(['genre']);
@@ -19,10 +20,11 @@ export default function HomePage() {
   // console.log(typeof email);
 
   useEffect(() => {
+    console.log('Global Values: ', globalValues)
     const fetchingArtists = async () => {
       try {
         const response = await fetch(
-          `/api/home/artist?email=${encodeURIComponent(email)}`,
+          `/api/home/artist?email=${email}`,
           {
             method: 'GET',
             headers: { 'Content-Type': 'application/json' },
@@ -37,11 +39,12 @@ export default function HomePage() {
       }
     };
     fetchingArtists();
+    fetchingArtists();
 
     const fetchingGenres = async () => {
       try {
         const response = await fetch(
-          `/api/home/genre?email=${encodeURIComponent(email)}`,
+          `/api/home/genre?email=${email}`,
           {
             method: 'GET',
             headers: { 'Content-Type': 'application/json' },
@@ -72,13 +75,13 @@ export default function HomePage() {
             underline="hover"
             color="inherit"
             to="/preferences"
-            state={{ email, username, accessToken }}
+            state={{ email, username, access_token }}
           >
             PREFERENCES
           </Link>
         </Breadcrumbs>
       </div>
-      <div className="home"> Welcome, {username}!</div>
+      <div className="home"> {`Welcome, ${username}!`}</div>
 
       <div className="showBox">
         <h1>Upcoming Shows In Your Area</h1>
@@ -104,7 +107,7 @@ export default function HomePage() {
                 </Typography>
               </CardContent>
             </Card>
-          ))}
+          )): 'No artists'}
         </div>
 
         <div className="genreShows">
@@ -129,7 +132,7 @@ export default function HomePage() {
                 </Typography>
               </CardContent>
             </Card>
-          ))}
+          )): 'No Genres'}
         </div>
       </div>
     </div>

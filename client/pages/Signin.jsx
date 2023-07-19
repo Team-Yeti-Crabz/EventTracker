@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 // import '../styles.css';
 
+
 // TODO: this comment belongs on '/callback' page
 // if user successfully signs in with spotify, then expect a response with a state parameter for us to compare to the one we randomly generated for the user in our get request
 
@@ -8,6 +9,7 @@ export default function Signin() {
   // const [state, setState] = useState('');
   const [url, setUrl] = useState('');
   const [fetched, setFetched] = useState(false);
+
 
   // fetch request to server to set random state and store on cookie and generate correct url for client to go to via Sign In button
   // ! client must go to link themseleves. you cannot make a request to the server to redirect them there otherwise will get cors error
