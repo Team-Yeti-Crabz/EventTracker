@@ -1,7 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 // import '../styles.css';
 import { Link, useLocation } from 'react-router-dom';
 import { Card, CardContent, Typography, Breadcrumbs } from '@mui/material';
+import { ValuesContext } from '../pages/Contexts';
+
 // import '@fontsource/roboto/300.css';
 // import '@fontsource/roboto/400.css';
 // import '@fontsource/roboto/500.css';
@@ -9,7 +11,7 @@ import { Card, CardContent, Typography, Breadcrumbs } from '@mui/material';
 
 
 export default function HomePage() {
-  const location = useLocation();
+  // const location = useLocation();
   const { globalValues } = useContext(ValuesContext);
   const { email, username, access_token } = globalValues;
   const [userData, setUserData] = useState({});
@@ -38,7 +40,6 @@ export default function HomePage() {
         throw new Error('Error with artist fetch request!', err);
       }
     };
-    fetchingArtists();
     fetchingArtists();
 
     const fetchingGenres = async () => {
@@ -87,7 +88,7 @@ export default function HomePage() {
         <h1>Upcoming Shows In Your Area</h1>
         <div className="artistShows">
           <h2>Artist Shows</h2>
-          {artists.map((artist) => (
+          {artists ? artists.map((artist) => (
             <Card key={artist.artist} className="card">
               <CardContent>
                 <Typography variant="h5" component="h3">
@@ -112,7 +113,7 @@ export default function HomePage() {
 
         <div className="genreShows">
           <h2>Genre Shows</h2>
-          {genres.map((genre) => (
+          {genres ? genres.map((genre) => (
             <Card key={genre.artist} className="card">
               <CardContent>
                 <Typography variant="h5" component="h3">
