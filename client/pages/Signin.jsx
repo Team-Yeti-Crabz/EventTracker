@@ -35,9 +35,7 @@ export default function Signin() {
     redirectUrl();
   }
 
-  // useEffect(() => {
-  //   redirectUrl();
-  // }, [fetched]);
+
 
   // let navigate = useNavigate();
   // const routeChange = () =>{

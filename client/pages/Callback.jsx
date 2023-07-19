@@ -101,9 +101,6 @@ export default function Callback() {
     setFetched(true);
     getTokens();
   }
-  // useEffect(() => {
-  //   getTokens();
-  // }, [fetched]);
 
   return (
     <div className="signinPage">

@@ -136,6 +136,7 @@ authController.getTokens = (req, res, next) => {
         // Object.values(body)[3]
         res.locals.accessToken = body.access_token;
         res.locals.refreshToken = body.refresh_token;
+        console.log('ARE TOKENS VALID: ', res.locals.accessToken, res.locals.refreshToken)
 
         res.locals.options = {
           url: 'https://api.spotify.com/v1/me',

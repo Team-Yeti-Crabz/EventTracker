@@ -155,7 +155,8 @@ userController.updateUserSpotify = async (req, res, next) => {
 
 //add middleware to send access token to database
 userController.addToken = async (req, res, next) => {
-  console.log('entering addToken: ', req.body);
+  console.log('entering addToken');
+  console.log('LOOK HERE: ', res.locals)
   const accessToken = req.body.accessToken;
   const email = res.locals.email;
   const username = res.locals.username;
